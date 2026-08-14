@@ -1,26 +1,1059 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* =========================================
+   GLOBAL
+========================================= */
+
+* {
+  box-sizing: border-box;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: #080808;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: #080808;
+  color: #ffffff;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================================
+   MAIN PAGE
+========================================= */
+
+.card-page {
+  min-height: 100vh;
+  width: 100%;
+
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      #202020 0%,
+      #0b0b0b 45%,
+      #050505 100%
+    );
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 55px 20px 60px;
+}
+
+
+/* =========================================
+   INTRO
+========================================= */
+
+.intro {
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.hello-icon {
+  font-size: 34px;
+  line-height: 1;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+
+  font-size: 11px;
+  line-height: 1.2;
+
+  letter-spacing: 4px;
+
+  color: #888;
+}
+
+.intro h1 {
+  margin: 0;
+
+  font-size: clamp(30px, 8vw, 46px);
+  line-height: 1.05;
+
+  font-weight: 600;
+
+  letter-spacing: -1.5px;
+}
+
+.intro-description {
+  margin-top: 15px;
+
+  color: #858585;
+
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+
+/* =========================================
+   CARD WRAPPER
+========================================= */
+
+.card-wrapper {
+  width: min(100%, 390px);
+  height: 245px;
+
+  margin-top: 42px;
+
+  perspective: 1400px;
+  -webkit-perspective: 1400px;
+}
+
+
+/* =========================================
+   BUSINESS CARD
+========================================= */
+
+.business-card {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  cursor: pointer;
+
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+
+  transition:
+    transform 0.75s cubic-bezier(
+      0.4,
+      0.2,
+      0.2,
+      1
+    );
+
+  touch-action: manipulation;
+
+  -webkit-tap-highlight-color: transparent;
+
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.business-card.flipped {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+}
+
+
+/* =========================================
+   CARD FACES
+========================================= */
+
+.card-face {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  border-radius: 22px;
+
+  overflow: hidden;
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.5);
+}
+
+
+/* =========================================
+   FRONT
+========================================= */
+
+.card-front {
+  background:
+    linear-gradient(
+      135deg,
+      #181818,
+      #050505
+    );
+
+  border: 1px solid #333;
+
+  padding: 25px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-top,
+.card-bottom {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-top > span:first-child {
+  font-size: 24px;
+
+  font-weight: 700;
+
+  letter-spacing: -2px;
+}
+
+.card-initials {
+  display: inline-block;
+}
+
+.card-small-text {
+  font-size: 8px;
+
+  letter-spacing: 3px;
+
+  color: #777;
+}
+
+.card-center {
+  text-align: left;
+}
+
+.card-label {
+  margin: 0 0 7px;
+
+  font-size: 10px;
+
+  letter-spacing: 3px;
+
+  color: #888;
+}
+
+.card-center h2 {
+  margin: 0;
+
+  font-size: 27px;
+
+  font-weight: 500;
+
+  letter-spacing: -1px;
+}
+
+.card-bottom {
+  font-size: 9px;
+
+  letter-spacing: 2px;
+
+  color: #888;
+}
+
+
+/* =========================================
+   BACK
+========================================= */
+
+.card-back {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+
+  background:
+    linear-gradient(
+      135deg,
+      #101010,
+      #1b1b1b
+    );
+
+  border: 1px solid #333;
+
+  padding: 25px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: flex-start;
+}
+
+
+/* =========================================
+   BACK HEADING
+========================================= */
+
+.back-heading {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+
+  flex-shrink: 0;
+}
+
+.back-label {
+  margin: 0;
+
+  font-size: 9px;
+
+  line-height: 1.2;
+
+  letter-spacing: 3px;
+
+  color: #777;
+}
+
+.card-back h2 {
+  margin: 0;
+
+  font-size: 25px;
+
+  line-height: 1.2;
+
+  font-weight: 500;
+}
+
+
+/* =========================================
+   CONTACT DETAILS
+========================================= */
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  margin-top: 20px;
+
+  flex-shrink: 0;
+}
+
+.contact-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  min-height: 20px;
+
+  color: rgba(255, 255, 255, 0.68);
+
+  text-decoration: none;
+
+  font-size: 13px;
+  line-height: 1.2;
+
+  touch-action: manipulation;
+
+  -webkit-tap-highlight-color: transparent;
+
+  -webkit-user-select: text;
+  user-select: text;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.contact-item svg {
+  width: 16px;
+  height: 16px;
+
+  flex-shrink: 0;
+
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.contact-item:hover {
+  color: #ffffff;
+
+  transform: translateX(3px);
+}
+
+.contact-item:hover svg {
+  color: #ffffff;
+}
+
+
+/* =========================================
+   FLIP HINT
+========================================= */
+
+.flip-hint {
+  margin: auto 0 0;
+
+  padding-top: 8px;
+
+  font-size: 10px;
+
+  line-height: 1;
+
+  letter-spacing: 0.04em;
+
+  color: rgba(255, 255, 255, 0.28);
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================
+   DOWNLOAD BUTTON
+========================================= */
+
+.download-button {
+  width: min(100%, 390px);
+
+  min-height: 58px;
+
+  margin-top: 30px;
+
+  padding: 17px 20px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  color: #000000;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  touch-action: manipulation;
+
+  -webkit-tap-highlight-color: transparent;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.download-button:hover {
+  transform: translateY(-2px);
+}
+
+.download-button:active {
+  transform: scale(0.98);
+}
+
+.download-button span {
+  margin-right: 8px;
+
+  font-size: 18px;
+}
+
+
+/* =========================================
+   SUCCESS MESSAGE
+========================================= */
+
+.success-message {
+  width: min(100%, 390px);
+
+  margin-top: 18px;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  background: rgba(
+    50,
+    200,
+    100,
+    0.08
+  );
+
+  border: 1px solid rgba(
+    50,
+    200,
+    100,
+    0.25
+  );
+
+  color: #9ee6b0;
+
+  font-size: 12px;
+
+  line-height: 1.4;
+
+  text-align: center;
+}
+
+
+/* =========================================
+   MODAL OVERLAY
+========================================= */
+
+.modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  padding: 20px;
+
+  background: rgba(
+    0,
+    0,
+    0,
+    0.78
+  );
+
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  touch-action: manipulation;
+}
+
+
+/* =========================================
+   EMAIL MODAL
+========================================= */
+
+.email-modal {
+  position: relative;
+
+  width: min(100%, 390px);
+
+  padding: 30px;
+
+  border-radius: 22px;
+
+  background: #151515;
+
+  border: 1px solid #333;
+
+  box-shadow:
+    0 30px 100px
+    rgba(0, 0, 0, 0.7);
+
+  animation:
+    modalIn
+    0.25s ease;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(20px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
+.close-button {
+  position: absolute;
+
+  top: 17px;
+  right: 20px;
+
+  width: 32px;
+  height: 32px;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #777;
+
+  font-size: 28px;
+
+  line-height: 32px;
+
+  cursor: pointer;
+
+  touch-action: manipulation;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.close-button:active {
+  transform: scale(0.92);
+}
+
+
+/* =========================================
+   MODAL CONTENT
+========================================= */
+
+.modal-icon {
+  font-size: 28px;
+
+  line-height: 1;
+
+  margin-bottom: 15px;
+}
+
+.email-modal h2 {
+  margin: 0;
+
+  font-size: 25px;
+
+  line-height: 1.2;
+}
+
+.email-modal > p {
+  color: #888;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+  margin-top: 10px;
+}
+
+
+/* =========================================
+   EMAIL INPUT
+========================================= */
+
+.email-modal input {
+  display: block;
+
+  width: 100%;
+
+  margin-top: 22px;
+
+  padding: 15px;
+
+  border-radius: 12px;
+
+  border: 1px solid #333;
+
+  outline: none;
+
+  background: #080808;
+
+  color: #ffffff;
+
+  font-size: 16px;
+
+  line-height: 1.2;
+
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.email-modal input::placeholder {
+  color: #666;
+}
+
+.email-modal input:focus {
+  border-color: #777;
+}
+
+
+/* =========================================
+   SEND BUTTON
+========================================= */
+
+.send-button {
+  width: 100%;
+
+  margin-top: 12px;
+
+  padding: 15px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  color: #000000;
+
+  font-weight: 600;
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+  touch-action: manipulation;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.send-button:active {
+  transform: scale(0.98);
+}
+
+.send-button:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.error-message {
+  margin-top: 10px;
+
+  color: #ff7777;
+
+  font-size: 12px;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================
+   PRIVACY
+========================================= */
+
+.privacy-text {
+  text-align: center;
+
+  font-size: 10px !important;
+
+  line-height: 1.4 !important;
+
+  color: #555 !important;
+
+  margin-top: 15px !important;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 768px) {
+
+  .card-page {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+
+  .card-page {
+    min-height: 100svh;
+
+    padding:
+      42px
+      16px
+      50px;
+  }
+
+
+  /* INTRO */
+
+  .hello-icon {
+    font-size: 34px;
+
+    margin-bottom: 18px;
+  }
+
+  .eyebrow {
+    font-size: 10px;
+
+    letter-spacing: 3.5px;
+  }
+
+  .intro h1 {
+    font-size: clamp(
+      32px,
+      8.5vw,
+      42px
+    );
+
+    letter-spacing: -1.4px;
+  }
+
+  .intro-description {
+    font-size: 14px;
+
+    line-height: 1.65;
+  }
+
+
+  /* =======================================
+     CARD
+  ======================================= */
+
+  .card-wrapper {
+    width: 100%;
+
+    max-width: 390px;
+
+    /*
+      IMPORTANT:
+      Increased from 215px to 245px
+      so the complete back side fits.
+    */
+
+    height: 245px;
+
+    margin-top: 35px;
+  }
+
+
+  .card-front,
+  .card-back {
+    padding: 22px;
+  }
+
+
+  /* FRONT */
+
+  .card-top > span:first-child {
+    font-size: 24px;
+  }
+
+  .card-small-text {
+    font-size: 8px;
+
+    letter-spacing: 2.5px;
+  }
+
+  .card-label {
+    font-size: 9px;
+
+    letter-spacing: 2.8px;
+  }
+
+  .card-center h2 {
+    font-size: 23px;
+
+    line-height: 1.15;
+  }
+
+  .card-bottom {
+    font-size: 8px;
+
+    letter-spacing: 1.8px;
+  }
+
+
+  /* =======================================
+     BACK
+  ======================================= */
+
+  .card-back {
+    padding: 22px;
+
+    justify-content: flex-start;
+  }
+
+  .back-heading {
+    gap: 6px;
+  }
+
+  .back-label {
+    font-size: 9px;
+
+    letter-spacing: 3px;
+  }
+
+  .card-back h2 {
+    font-size: 24px;
+
+    line-height: 1.2;
+  }
+
+
+  /* CONTACT */
+
+  .contact-details {
+    gap: 9px;
+
+    margin-top: 19px;
+  }
+
+  .contact-item {
+    gap: 11px;
+
+    min-height: 20px;
+
+    font-size: 13px;
+
+    line-height: 1.2;
+  }
+
+  .contact-item svg {
+    width: 17px;
+    height: 17px;
+  }
+
+
+  /* FLIP HINT */
+
+  .flip-hint {
+    margin-top: auto;
+
+    padding-top: 7px;
+
+    font-size: 9px;
+
+    line-height: 1;
+  }
+
+
+  /* =======================================
+     DOWNLOAD
+  ======================================= */
+
+  .download-button {
+    width: 100%;
+
+    max-width: 390px;
+
+    min-height: 58px;
+
+    margin-top: 28px;
+
+    padding:
+      17px
+      20px;
+
+    font-size: 15px;
+  }
+
+
+  /* =======================================
+     SUCCESS MESSAGE
+  ======================================= */
+
+  .success-message {
+    width: 100%;
+
+    max-width: 390px;
+
+    margin-top: 18px;
+
+    padding:
+      13px
+      12px;
+
+    font-size: 12px;
+  }
+
+
+  /* =======================================
+     MODAL
+  ======================================= */
+
+  .modal-overlay {
+    padding: 16px;
+  }
+
+  .email-modal {
+    width: 100%;
+
+    max-width: 390px;
+
+    max-height:
+      calc(
+        100svh - 32px
+      );
+
+    overflow-y: auto;
+
+    padding: 26px;
+  }
+
+  .email-modal h2 {
+    font-size: 24px;
+  }
+
+  .email-modal > p {
+    font-size: 13px;
+  }
+
+  .email-modal input {
+    font-size: 16px;
+  }
+
+}
+
+
+/* =========================================
+   VERY SMALL PHONES
+========================================= */
+
+@media (max-width: 360px) {
+
+  .card-page {
+    padding:
+      32px
+      12px
+      40px;
+  }
+
+  .card-wrapper {
+    height: 235px;
+
+    margin-top: 30px;
+  }
+
+  .card-front,
+  .card-back {
+    padding: 19px;
+  }
+
+  .card-back h2 {
+    font-size: 22px;
+  }
+
+  .contact-details {
+    gap: 8px;
+
+    margin-top: 17px;
+  }
+
+  .contact-item {
+    font-size: 12px;
+  }
+
+  .contact-item svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .flip-hint {
+    font-size: 8px;
+  }
+
 }
