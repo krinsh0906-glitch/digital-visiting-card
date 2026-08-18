@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
-/* =========================================
+/* =========================================================
    GLOBAL
-========================================= */
+========================================================= */
 
 * {
   box-sizing: border-box;
@@ -22,13 +22,16 @@ html {
 body {
   background: #080808;
   color: #ffffff;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 }
 
 
-/* =========================================
-   MAIN PAGE
-========================================= */
+/* =========================================================
+   MAIN BUSINESS CARD PAGE
+========================================================= */
 
 .card-page {
   min-height: 100vh;
@@ -50,19 +53,21 @@ body {
 }
 
 
-/* =========================================
+/* =========================================================
    INTRO
-========================================= */
+========================================================= */
 
 .intro {
   width: 100%;
   max-width: 500px;
+
   text-align: center;
 }
 
 .hello-icon {
   font-size: 34px;
   line-height: 1;
+
   margin-bottom: 18px;
 }
 
@@ -98,9 +103,9 @@ body {
 }
 
 
-/* =========================================
-   CARD WRAPPER
-========================================= */
+/* =========================================================
+   BUSINESS CARD
+========================================================= */
 
 .card-wrapper {
   width: min(100%, 390px);
@@ -111,11 +116,6 @@ body {
   perspective: 1400px;
   -webkit-perspective: 1400px;
 }
-
-
-/* =========================================
-   BUSINESS CARD
-========================================= */
 
 .business-card {
   position: relative;
@@ -129,7 +129,8 @@ body {
   -webkit-transform-style: preserve-3d;
 
   transition:
-    transform 0.75s cubic-bezier(
+    transform 0.75s
+    cubic-bezier(
       0.4,
       0.2,
       0.2,
@@ -150,13 +151,12 @@ body {
 }
 
 
-/* =========================================
+/* =========================================================
    CARD FACES
-========================================= */
+========================================================= */
 
 .card-face {
   position: absolute;
-
   inset: 0;
 
   width: 100%;
@@ -170,13 +170,14 @@ body {
   -webkit-backface-visibility: hidden;
 
   box-shadow:
-    0 25px 70px rgba(0, 0, 0, 0.5);
+    0 25px 70px
+    rgba(0, 0, 0, 0.5);
 }
 
 
-/* =========================================
+/* =========================================================
    FRONT
-========================================= */
+========================================================= */
 
 .card-front {
   background:
@@ -192,6 +193,7 @@ body {
 
   display: flex;
   flex-direction: column;
+
   justify-content: space-between;
 }
 
@@ -256,9 +258,9 @@ body {
 }
 
 
-/* =========================================
+/* =========================================================
    BACK
-========================================= */
+========================================================= */
 
 .card-back {
   transform: rotateY(180deg);
@@ -281,11 +283,6 @@ body {
   justify-content: flex-start;
 }
 
-
-/* =========================================
-   BACK HEADING
-========================================= */
-
 .back-heading {
   display: flex;
   flex-direction: column;
@@ -299,7 +296,6 @@ body {
   margin: 0;
 
   font-size: 9px;
-
   line-height: 1.2;
 
   letter-spacing: 3px;
@@ -311,16 +307,10 @@ body {
   margin: 0;
 
   font-size: 25px;
-
   line-height: 1.2;
 
   font-weight: 500;
 }
-
-
-/* =========================================
-   CONTACT DETAILS
-========================================= */
 
 .contact-details {
   display: flex;
@@ -342,7 +332,13 @@ body {
 
   min-height: 20px;
 
-  color: rgba(255, 255, 255, 0.68);
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.68
+    );
 
   text-decoration: none;
 
@@ -367,7 +363,13 @@ body {
 
   flex-shrink: 0;
 
-  color: rgba(255, 255, 255, 0.65);
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.65
+    );
 }
 
 .contact-item:hover {
@@ -380,31 +382,31 @@ body {
   color: #ffffff;
 }
 
-
-/* =========================================
-   FLIP HINT
-========================================= */
-
 .flip-hint {
   margin: auto 0 0;
 
   padding-top: 8px;
 
   font-size: 10px;
-
   line-height: 1;
 
   letter-spacing: 0.04em;
 
-  color: rgba(255, 255, 255, 0.28);
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.28
+    );
 
   flex-shrink: 0;
 }
 
 
-/* =========================================
-   DOWNLOAD BUTTON
-========================================= */
+/* =========================================================
+   DOWNLOAD
+========================================================= */
 
 .download-button {
   width: min(100%, 390px);
@@ -453,62 +455,25 @@ body {
 }
 
 
-/* =========================================
-   SUCCESS MESSAGE
-========================================= */
-
-.success-message {
-  width: min(100%, 390px);
-
-  margin-top: 18px;
-
-  padding: 14px;
-
-  border-radius: 12px;
-
-  background: rgba(
-    50,
-    200,
-    100,
-    0.08
-  );
-
-  border: 1px solid rgba(
-    50,
-    200,
-    100,
-    0.25
-  );
-
-  color: #9ee6b0;
-
-  font-size: 12px;
-
-  line-height: 1.4;
-
-  text-align: center;
-}
-
-
-/* =========================================
-   MODAL OVERLAY
-========================================= */
+/* =========================================================
+   EMAIL MODAL
+========================================================= */
 
 .modal-overlay {
   position: fixed;
-
   inset: 0;
 
   z-index: 1000;
 
   padding: 20px;
 
-  background: rgba(
-    0,
-    0,
-    0,
-    0.78
-  );
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.78
+    );
 
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
@@ -517,14 +482,7 @@ body {
 
   align-items: center;
   justify-content: center;
-
-  touch-action: manipulation;
 }
-
-
-/* =========================================
-   EMAIL MODAL
-========================================= */
 
 .email-modal {
   position: relative;
@@ -541,86 +499,18 @@ body {
 
   box-shadow:
     0 30px 100px
-    rgba(0, 0, 0, 0.7);
-
-  animation:
-    modalIn
-    0.25s ease;
-}
-
-@keyframes modalIn {
-  from {
-    opacity: 0;
-
-    transform:
-      translateY(20px)
-      scale(0.97);
-  }
-
-  to {
-    opacity: 1;
-
-    transform:
-      translateY(0)
-      scale(1);
-  }
-}
-
-
-/* =========================================
-   CLOSE BUTTON
-========================================= */
-
-.close-button {
-  position: absolute;
-
-  top: 17px;
-  right: 20px;
-
-  width: 32px;
-  height: 32px;
-
-  padding: 0;
-
-  border: none;
-
-  background: transparent;
-
-  color: #777;
-
-  font-size: 28px;
-
-  line-height: 32px;
-
-  cursor: pointer;
-
-  touch-action: manipulation;
-
-  -webkit-tap-highlight-color: transparent;
-}
-
-.close-button:active {
-  transform: scale(0.92);
-}
-
-
-/* =========================================
-   MODAL CONTENT
-========================================= */
-
-.modal-icon {
-  font-size: 28px;
-
-  line-height: 1;
-
-  margin-bottom: 15px;
+    rgba(
+      0,
+      0,
+      0,
+      0.7
+    );
 }
 
 .email-modal h2 {
   margin: 0;
 
   font-size: 25px;
-
   line-height: 1.2;
 }
 
@@ -633,11 +523,6 @@ body {
 
   margin-top: 10px;
 }
-
-
-/* =========================================
-   EMAIL INPUT
-========================================= */
 
 .email-modal input {
   display: block;
@@ -661,9 +546,6 @@ body {
   font-size: 16px;
 
   line-height: 1.2;
-
-  -webkit-appearance: none;
-  appearance: none;
 }
 
 .email-modal input::placeholder {
@@ -673,11 +555,6 @@ body {
 .email-modal input:focus {
   border-color: #777;
 }
-
-
-/* =========================================
-   SEND BUTTON
-========================================= */
 
 .send-button {
   width: 100%;
@@ -699,361 +576,1953 @@ body {
   font-size: 14px;
 
   cursor: pointer;
-
-  touch-action: manipulation;
-
-  -webkit-tap-highlight-color: transparent;
 }
 
-.send-button:active {
-  transform: scale(0.98);
+
+/* =========================================================
+   NETWORKING PAGE
+========================================================= */
+
+.networking-page {
+  min-height: 100vh;
+
+  width: 100%;
+
+  padding:
+    48px
+    4vw
+    100px;
+
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      #222 0%,
+      #0b0b0b 45%,
+      #050505 100%
+    );
+
+  color: #f5f5f5;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 }
 
-.send-button:disabled {
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.networking-header {
+  width: 100%;
+
+  max-width: 1400px;
+
+  margin:
+    0
+    auto
+    70px;
+}
+
+.networking-eyebrow,
+.section-eyebrow {
+  margin: 0 0 14px;
+
+  font-size: 10px;
+
+  letter-spacing: 5px;
+
+  color: #8494a6;
+
+  font-weight: 600;
+}
+
+.networking-header h1 {
+  margin: 0;
+
+  font-size:
+    clamp(
+      48px,
+      7vw,
+      86px
+    );
+
+  line-height: 0.95;
+
+  font-weight: 400;
+
+  letter-spacing: -4px;
+}
+
+.networking-subtitle {
+  margin: 18px 0 0;
+
+  max-width: 600px;
+
+  color: #8d8d8d;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   CREATE MEETING
+========================================================= */
+
+.create-meeting,
+.meetings-section {
+  width: 100%;
+
+  max-width: 1400px;
+
+  margin:
+    0
+    auto
+    70px;
+}
+
+.create-meeting {
+  padding: 48px;
+
+  border:
+    1px
+    solid
+    #292929;
+
+  border-radius: 24px;
+
+  background: #0b0b0b;
+
+  scroll-margin-top: 30px;
+}
+
+.section-heading {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 38px;
+}
+
+.section-heading h2 {
+  margin: 0;
+
+  font-size: 34px;
+
+  font-weight: 400;
+
+  letter-spacing: -1.5px;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.meeting-form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 28px;
+}
+
+.form-group {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.form-group label {
+  font-size: 14px;
+
+  color: #c7c7c7;
+}
+
+.form-group input {
+  width: 100%;
+
+  height: 58px;
+
+  padding:
+    0
+    20px;
+
+  border-radius: 14px;
+
+  border:
+    1px
+    solid
+    #303030;
+
+  background: #080808;
+
+  color: #f4f4f4;
+
+  font-family: inherit;
+
+  font-size: 16px;
+
+  outline: none;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.form-group input:focus {
+  border-color: #777;
+
+  background: #0c0c0c;
+}
+
+.form-group input::placeholder {
+  color: #555;
+}
+
+.form-group input[type="date"] {
+  color-scheme: dark;
+}
+
+.date-help {
+  margin: 2px 0 0;
+
+  color: #707070;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   CREATE BUTTON
+========================================================= */
+
+.create-button {
+  width: 100%;
+
+  height: 58px;
+
+  min-height: 58px;
+
+  border: 0;
+
+  border-radius: 12px;
+
+  background: #f5f5f5;
+
+  color: #050505;
+
+  font-family: inherit;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.create-button:hover {
+  background: #ffffff;
+
+  transform: translateY(-1px);
+}
+
+.create-button:active {
+  transform: scale(0.99);
+}
+
+.create-button:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   FORM MESSAGES
+========================================================= */
+
+.networking-message {
+  padding:
+    16px
+    18px;
+
+  border-radius: 12px;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+.networking-success {
+  border:
+    1px
+    solid
+    rgba(
+      60,
+      220,
+      140,
+      0.3
+    );
+
+  color: #68e5a4;
+
+  background:
+    rgba(
+      30,
+      100,
+      65,
+      0.08
+    );
+}
+
+.networking-error {
+  border:
+    1px
+    solid
+    rgba(
+      255,
+      80,
+      80,
+      0.3
+    );
+
+  color: #ff7777;
+
+  background:
+    rgba(
+      120,
+      30,
+      30,
+      0.08
+    );
+}
+
+
+/* =========================================================
+   MEETINGS SECTION
+========================================================= */
+
+.meetings-section {
+  padding-bottom: 50px;
+}
+
+.meeting-count {
+  min-width: 40px;
+
+  height: 40px;
+
+  padding: 0 12px;
+
+  border:
+    1px
+    solid
+    #292929;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: #a0a0a0;
+
+  font-size: 13px;
+}
+
+.meeting-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 24px;
+}
+
+
+/* =========================================================
+   MEETING CARD
+========================================================= */
+
+.meeting-card {
+  position: relative;
+
+  padding: 48px;
+
+  border:
+    1px
+    solid
+    #282828;
+
+  border-radius: 24px;
+
+  background: #080808;
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.meeting-card:hover {
+  border-color: #444;
+
+  transform: translateY(-2px);
+}
+
+
+/* CLOSED */
+
+.meeting-card.is-closed {
+  opacity: 0.68;
+}
+
+.meeting-card.is-closed:hover {
+  transform: none;
+
+  border-color: #333;
+}
+
+
+/* =========================================================
+   CARD TOP
+========================================================= */
+
+.meeting-card-top {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  gap: 30px;
+}
+
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.active-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding:
+    8px
+    14px;
+
+  border:
+    1px
+    solid
+    rgba(
+      50,
+      220,
+      130,
+      0.4
+    );
+
+  border-radius: 999px;
+
+  color: #55df99;
+
+  font-size: 10px;
+
+  letter-spacing: 3px;
+
+  font-weight: 600;
+}
+
+.active-badge.closed {
+  border-color: #444;
+
+  color: #777;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.03
+    );
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.meeting-card h3 {
+  margin:
+    22px
+    0
+    0;
+
+  font-size:
+    clamp(
+      30px,
+      4vw,
+      42px
+    );
+
+  font-weight: 400;
+
+  letter-spacing: -2px;
+
+  line-height: 1.1;
+}
+
+
+/* =========================================================
+   CARD ACTION HEADER
+========================================================= */
+
+.meeting-card-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  flex-shrink: 0;
+}
+
+.meeting-code {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 46px;
+
+  padding:
+    0
+    15px;
+
+  border:
+    1px
+    solid
+    #292929;
+
+  border-radius: 12px;
+
+  color: #777;
+
+  font-family: monospace;
+
+  font-size: 11px;
+
+  letter-spacing: 1px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   THREE DOT MENU
+========================================================= */
+
+.menu-wrapper {
+  position: relative;
+}
+
+.more-button {
+  width: 46px;
+
+  height: 46px;
+
+  padding: 0;
+
+  border: 0;
+
+  border-radius: 12px;
+
+  background: transparent;
+
+  color: #ddd;
+
+  font-family: inherit;
+
+  font-size: 27px;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.more-button:hover {
+  background: #171717;
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   DROPDOWN
+========================================================= */
+
+.meeting-menu {
+  position: absolute;
+
+  top: 54px;
+
+  right: 0;
+
+  z-index: 100;
+
+  width: 180px;
+
+  padding: 8px;
+
+  border:
+    1px
+    solid
+    #343434;
+
+  border-radius: 15px;
+
+  background: #111111;
+
+  box-shadow:
+    0
+    20px
+    60px
+    rgba(
+      0,
+      0,
+      0,
+      0.55
+    );
+
+  animation:
+    menuIn
+    0.15s
+    ease;
+}
+
+@keyframes menuIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-5px)
+      scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+.menu-item {
+  width: 100%;
+
+  min-height: 44px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding:
+    0
+    14px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: #eee;
+
+  text-align: left;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.menu-item:hover {
+  background: #1c1c1c;
+
+  color: #ffffff;
+}
+
+.menu-icon {
+  width: 20px;
+
+  text-align: center;
+
+  flex-shrink: 0;
+}
+
+.menu-delete {
+  color: #ff6868;
+}
+
+.menu-delete:hover {
+  background:
+    rgba(
+      255,
+      80,
+      80,
+      0.08
+    );
+
+  color: #ff7777;
+}
+
+
+/* =========================================================
+   MEETING INFO
+========================================================= */
+
+.meeting-info {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 30px;
+
+  margin-top: 42px;
+
+  padding-top: 30px;
+
+  border-top:
+    1px
+    solid
+    #242424;
+}
+
+.info-item {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.info-label {
+  color: #697585;
+
+  font-size: 10px;
+
+  letter-spacing: 4px;
+}
+
+.info-item strong {
+  color: #ddd;
+
+  font-size: 15px;
+
+  font-weight: 400;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   MEETING ACTIONS
+========================================================= */
+
+.meeting-actions {
+  display: flex;
+
+  gap: 12px;
+
+  margin-top: 35px;
+}
+
+.qr-button,
+.secondary-button {
+  min-height: 54px;
+
+  height: 54px;
+
+  padding:
+    0
+    24px;
+
+  border-radius: 12px;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.qr-button {
+  border: 0;
+
+  background: #f4f4f4;
+
+  color: #050505;
+}
+
+.qr-button:hover {
+  background: #ffffff;
+
+  transform: translateY(-1px);
+}
+
+.secondary-button {
+  border:
+    1px
+    solid
+    #303030;
+
+  background: transparent;
+
+  color: #ddd;
+}
+
+.secondary-button:hover {
+  border-color: #555;
+
+  background: #111111;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state {
+  padding:
+    85px
+    30px;
+
+  border:
+    1px
+    solid
+    #252525;
+
+  border-radius: 24px;
+
+  text-align: center;
+
+  color: #777;
+}
+
+.empty-add-button {
+  width: 64px;
+
+  height: 64px;
+
+  margin-bottom: 25px;
+
+  border:
+    1px
+    solid
+    #353535;
+
+  border-radius: 50%;
+
+  background: transparent;
+
+  color: #aaa;
+
+  font-size: 27px;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.empty-add-button:hover {
+  color: #ffffff;
+
+  border-color: #666;
+
+  transform: scale(1.05);
+}
+
+.empty-state h3 {
+  margin:
+    0
+    0
+    10px;
+
+  color: #ddd;
+
+  font-size: 24px;
+
+  font-weight: 400;
+}
+
+.empty-state p {
+  margin: 0;
+
+  font-size: 14px;
+}
+
+.empty-create-link {
+  margin-top: 25px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #ddd;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  cursor: pointer;
+
+  text-decoration: underline;
+
+  text-underline-offset: 4px;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.networking-toast {
+  position: fixed;
+
+  top: 24px;
+
+  right: 24px;
+
+  z-index: 3000;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding:
+    14px
+    18px;
+
+  border-radius: 12px;
+
+  background: #111111;
+
+  box-shadow:
+    0
+    20px
+    70px
+    rgba(
+      0,
+      0,
+      0,
+      0.6
+    );
+
+  font-size: 14px;
+
+  animation:
+    toastIn
+    0.2s
+    ease;
+}
+
+@keyframes toastIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-8px)
+      translateX(5px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      translateX(0);
+  }
+}
+
+.toast-success {
+  border:
+    1px
+    solid
+    rgba(
+      70,
+      220,
+      140,
+      0.35
+    );
+
+  color: #70e3a6;
+}
+
+.toast-error {
+  border:
+    1px
+    solid
+    rgba(
+      255,
+      80,
+      80,
+      0.35
+    );
+
+  color: #ff7777;
+}
+
+.toast-icon {
+  width: 22px;
+
+  height: 22px;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: currentColor;
+
+  color: #111;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   MODAL BACKDROP
+========================================================= */
+
+.modal-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 2000;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 24px;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.78
+    );
+
+  backdrop-filter: blur(12px);
+
+  -webkit-backdrop-filter: blur(12px);
+}
+
+
+/* =========================================================
+   EDIT MODAL
+========================================================= */
+
+.edit-modal {
+  width: 100%;
+
+  max-width: 620px;
+
+  max-height:
+    calc(
+      100vh - 48px
+    );
+
+  overflow-y: auto;
+
+  padding: 34px;
+
+  border:
+    1px
+    solid
+    rgba(
+      255,
+      255,
+      255,
+      0.14
+    );
+
+  border-radius: 22px;
+
+  background: #111111;
+
+  box-shadow:
+    0
+    30px
+    100px
+    rgba(
+      0,
+      0,
+      0,
+      0.7
+    );
+
+  animation:
+    editModalIn
+    0.2s
+    ease;
+}
+
+@keyframes editModalIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(12px)
+      scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* =========================================================
+   EDIT MODAL HEADER
+========================================================= */
+
+.modal-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  margin-bottom: 35px;
+
+  gap: 20px;
+}
+
+.modal-header h2 {
+  margin: 6px 0 0;
+
+  font-size: 32px;
+
+  line-height: 1.15;
+
+  font-weight: 400;
+
+  letter-spacing: -1px;
+}
+
+
+/* =========================================================
+   MODAL CLOSE
+========================================================= */
+
+.modal-close {
+  width: 46px;
+
+  height: 46px;
+
+  min-width: 46px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 0;
+
+  border:
+    1px
+    solid
+    #292929;
+
+  border-radius: 12px;
+
+  background: transparent;
+
+  color: #aaa;
+
+  font-family: inherit;
+
+  font-size: 24px;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.modal-close:hover {
+  background: #181818;
+
+  border-color: #444;
+
+  color: #ffffff;
+}
+
+.modal-close:disabled {
   opacity: 0.5;
 
   cursor: not-allowed;
 }
 
 
-/* =========================================
-   ERROR
-========================================= */
+/* =========================================================
+   EDIT FORM GROUPS
+========================================================= */
 
-.error-message {
-  margin-top: 10px;
+.edit-modal .form-group {
+  margin-bottom: 22px;
+}
 
-  color: #ff7777;
-
-  font-size: 12px;
-
-  line-height: 1.4;
+.edit-modal .form-group:last-of-type {
+  margin-bottom: 0;
 }
 
 
-/* =========================================
-   PRIVACY
-========================================= */
+/* =========================================================
+   EDIT MODAL BUTTONS
 
-.privacy-text {
-  text-align: center;
+   IMPORTANT:
+   These are completely independent from
+   .create-button and .secondary-button.
 
-  font-size: 10px !important;
+   BOTH ARE EXACTLY:
 
-  line-height: 1.4 !important;
+   width: 160px
+   height: 54px
+========================================================= */
 
-  color: #555 !important;
+.edit-actions {
+  display: flex;
 
-  margin-top: 15px !important;
+  flex-direction: row;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  width: 100%;
+
+  margin-top: 30px;
 }
 
 
-/* =========================================
-   TABLET
-========================================= */
+/* BOTH BUTTONS */
 
-@media (max-width: 768px) {
+.edit-cancel-button,
+.edit-save-button {
+  box-sizing: border-box;
 
-  .card-page {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
+  width: 160px;
 
+  min-width: 160px;
+
+  max-width: 160px;
+
+  height: 54px;
+
+  min-height: 54px;
+
+  max-height: 54px;
+
+  margin: 0;
+
+  padding:
+    0
+    20px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 12px;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease,
+    opacity 0.2s ease;
 }
 
 
-/* =========================================
-   MOBILE
-========================================= */
+/* CANCEL */
 
-@media (max-width: 480px) {
+.edit-cancel-button {
+  border:
+    1px
+    solid
+    #333;
 
-  .card-page {
-    min-height: 100svh;
+  background: transparent;
 
-    padding:
-      42px
-      16px
-      50px;
-  }
+  color: #ccc;
+}
+
+.edit-cancel-button:hover {
+  border-color: #555;
+
+  background: #181818;
+
+  color: #ffffff;
+}
 
 
-  /* INTRO */
+/* SAVE */
 
-  .hello-icon {
-    font-size: 34px;
+.edit-save-button {
+  border:
+    1px
+    solid
+    #eeeeee;
 
-    margin-bottom: 18px;
-  }
+  background: #f5f5f5;
 
-  .eyebrow {
-    font-size: 10px;
+  color: #080808;
+}
 
-    letter-spacing: 3.5px;
-  }
+.edit-save-button:hover {
+  background: #ffffff;
 
-  .intro h1 {
-    font-size: clamp(
-      32px,
-      8.5vw,
-      42px
+  transform: translateY(-1px);
+}
+
+
+/* ACTIVE */
+
+.edit-cancel-button:active,
+.edit-save-button:active {
+  transform: scale(0.98);
+}
+
+
+/* DISABLED */
+
+.edit-cancel-button:disabled,
+.edit-save-button:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   DELETE MODAL
+========================================================= */
+
+.delete-modal {
+  width: 100%;
+
+  max-width: 460px;
+
+  padding: 34px;
+
+  border:
+    1px
+    solid
+    #333;
+
+  border-radius: 22px;
+
+  background: #0d0d0d;
+
+  box-shadow:
+    0
+    30px
+    100px
+    rgba(
+      0,
+      0,
+      0,
+      0.7
     );
 
-    letter-spacing: -1.4px;
-  }
+  text-align: center;
+}
 
-  .intro-description {
-    font-size: 14px;
+.delete-icon {
+  width: 54px;
 
-    line-height: 1.65;
-  }
+  height: 54px;
 
+  margin:
+    0
+    auto
+    20px;
 
-  /* =======================================
-     CARD
-  ======================================= */
+  display: flex;
 
-  .card-wrapper {
-    width: 100%;
+  align-items: center;
 
-    max-width: 390px;
+  justify-content: center;
 
-    /*
-      IMPORTANT:
-      Increased from 215px to 245px
-      so the complete back side fits.
-    */
+  border:
+    1px
+    solid
+    rgba(
+      255,
+      80,
+      80,
+      0.3
+    );
 
-    height: 245px;
+  border-radius: 50%;
 
-    margin-top: 35px;
-  }
+  color: #ff6868;
+}
 
+.delete-modal h2 {
+  margin:
+    0
+    0
+    12px;
 
-  .card-front,
-  .card-back {
-    padding: 22px;
-  }
+  font-size: 28px;
 
+  font-weight: 400;
+}
 
-  /* FRONT */
+.delete-modal p {
+  margin: 0;
 
-  .card-top > span:first-child {
-    font-size: 24px;
-  }
+  color: #888;
 
-  .card-small-text {
-    font-size: 8px;
+  line-height: 1.6;
 
-    letter-spacing: 2.5px;
-  }
+  font-size: 14px;
+}
 
-  .card-label {
-    font-size: 9px;
+.delete-modal strong {
+  color: #ddd;
 
-    letter-spacing: 2.8px;
-  }
-
-  .card-center h2 {
-    font-size: 23px;
-
-    line-height: 1.15;
-  }
-
-  .card-bottom {
-    font-size: 8px;
-
-    letter-spacing: 1.8px;
-  }
+  font-weight: 500;
+}
 
 
-  /* =======================================
-     BACK
-  ======================================= */
+/* =========================================================
+   DELETE MODAL ACTIONS
+========================================================= */
 
-  .card-back {
-    padding: 22px;
+.modal-actions {
+  display: flex;
 
-    justify-content: flex-start;
-  }
+  align-items: center;
 
-  .back-heading {
-    gap: 6px;
-  }
+  justify-content: flex-end;
 
-  .back-label {
-    font-size: 9px;
+  gap: 12px;
 
-    letter-spacing: 3px;
-  }
+  margin-top: 30px;
+}
 
-  .card-back h2 {
-    font-size: 24px;
+.modal-actions .secondary-button {
+  min-width: 140px;
+}
 
-    line-height: 1.2;
-  }
+.delete-confirm-button {
+  min-height: 54px;
+
+  height: 54px;
+
+  min-width: 140px;
+
+  padding:
+    0
+    24px;
+
+  border:
+    1px
+    solid
+    rgba(
+      255,
+      70,
+      70,
+      0.5
+    );
+
+  border-radius: 12px;
+
+  background:
+    rgba(
+      120,
+      30,
+      30,
+      0.15
+    );
+
+  color: #ff7070;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease,
+    opacity 0.2s ease;
+}
+
+.delete-confirm-button:hover {
+  background:
+    rgba(
+      150,
+      35,
+      35,
+      0.25
+    );
+}
+
+.delete-confirm-button:active {
+  transform: scale(0.98);
+}
+
+.delete-confirm-button:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
 
 
-  /* CONTACT */
+/* =========================================================
+   TABLET
+========================================================= */
 
-  .contact-details {
-    gap: 9px;
+@media (max-width: 800px) {
 
-    margin-top: 19px;
-  }
-
-  .contact-item {
-    gap: 11px;
-
-    min-height: 20px;
-
-    font-size: 13px;
-
-    line-height: 1.2;
-  }
-
-  .contact-item svg {
-    width: 17px;
-    height: 17px;
-  }
-
-
-  /* FLIP HINT */
-
-  .flip-hint {
-    margin-top: auto;
-
-    padding-top: 7px;
-
-    font-size: 9px;
-
-    line-height: 1;
-  }
-
-
-  /* =======================================
-     DOWNLOAD
-  ======================================= */
-
-  .download-button {
-    width: 100%;
-
-    max-width: 390px;
-
-    min-height: 58px;
-
-    margin-top: 28px;
-
+  .networking-page {
     padding:
-      17px
+      30px
+      18px
+      70px;
+  }
+
+  .create-meeting {
+    padding:
+      28px
       20px;
-
-    font-size: 15px;
   }
 
-
-  /* =======================================
-     SUCCESS MESSAGE
-  ======================================= */
-
-  .success-message {
-    width: 100%;
-
-    max-width: 390px;
-
-    margin-top: 18px;
-
+  .meeting-card {
     padding:
-      13px
-      12px;
-
-    font-size: 12px;
+      28px
+      20px;
   }
 
-
-  /* =======================================
-     MODAL
-  ======================================= */
-
-  .modal-overlay {
-    padding: 16px;
+  .meeting-card-top {
+    flex-direction: column;
   }
 
-  .email-modal {
+  .meeting-card-actions {
     width: 100%;
 
-    max-width: 390px;
+    justify-content: space-between;
+  }
+
+  .meeting-info {
+    grid-template-columns: 1fr;
+  }
+
+  .meeting-actions {
+    flex-wrap: wrap;
+  }
+
+  .qr-button,
+  .meeting-actions .secondary-button {
+    flex: 1;
+  }
+
+  .networking-toast {
+    left: 18px;
+
+    right: 18px;
+
+    top: 18px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .networking-header {
+    margin-bottom: 45px;
+  }
+
+  .networking-header h1 {
+    font-size: 48px;
+
+    letter-spacing: -2.5px;
+  }
+
+  .section-heading h2 {
+    font-size: 28px;
+  }
+
+
+  /* EDIT MODAL */
+
+  .modal-backdrop {
+    padding: 14px;
+  }
+
+  .edit-modal {
+    width: 100%;
+
+    max-width: none;
 
     max-height:
       calc(
-        100svh - 32px
+        100svh - 28px
       );
 
-    overflow-y: auto;
+    padding:
+      25px
+      20px;
 
-    padding: 26px;
+    border-radius: 18px;
   }
 
-  .email-modal h2 {
-    font-size: 24px;
+  .modal-header {
+    margin-bottom: 28px;
   }
 
-  .email-modal > p {
+  .modal-header h2 {
+    font-size: 27px;
+  }
+
+  .modal-close {
+    width: 42px;
+
+    height: 42px;
+
+    min-width: 42px;
+  }
+
+
+  /* =============================================
+     EDIT BUTTONS
+
+     KEEP SIDE BY SIDE
+
+     BOTH EXACTLY SAME SIZE
+  ============================================= */
+
+  .edit-actions {
+    flex-direction: row;
+
+    gap: 8px;
+
+    width: 100%;
+  }
+
+  .edit-cancel-button,
+  .edit-save-button {
+    flex: 1 1 0;
+
+    width: 0;
+
+    min-width: 0;
+
+    max-width: none;
+
+    height: 52px;
+
+    min-height: 52px;
+
+    max-height: 52px;
+
+    padding:
+      0
+      10px;
+
     font-size: 13px;
   }
 
-  .email-modal input {
-    font-size: 16px;
+
+  /* DELETE MODAL */
+
+  .delete-modal {
+    padding:
+      28px
+      20px;
   }
 
+  .delete-modal .modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .delete-modal
+    .modal-actions
+    .secondary-button,
+  .delete-confirm-button {
+    width: 100%;
+
+    min-width: 0;
+  }
 }
 
 
-/* =========================================
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .networking-page {
+    padding:
+      30px
+      14px
+      60px;
+  }
+
+  .networking-header h1 {
+    font-size: 44px;
+  }
+
+  .networking-subtitle {
+    font-size: 13px;
+  }
+
+  .create-meeting {
+    padding:
+      24px
+      18px;
+
+    border-radius: 20px;
+  }
+
+  .meeting-card {
+    padding:
+      24px
+      18px;
+
+    border-radius: 20px;
+  }
+
+  .meeting-card h3 {
+    font-size: 28px;
+  }
+
+  .meeting-card-actions {
+    width: 100%;
+  }
+
+  .meeting-code {
+    max-width: calc(100% - 55px);
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+  }
+
+  .meeting-actions {
+    flex-direction: column;
+  }
+
+  .qr-button,
+  .meeting-actions .secondary-button {
+    width: 100%;
+
+    flex: none;
+  }
+
+  .empty-state {
+    padding:
+      65px
+      20px;
+  }
+
+  .networking-toast {
+    font-size: 13px;
+  }
+
+
+  /* EDIT */
+
+  .edit-modal {
+    padding:
+      22px
+      18px;
+  }
+
+  .edit-actions {
+    gap: 7px;
+  }
+
+  .edit-cancel-button,
+  .edit-save-button {
+    height: 50px;
+
+    min-height: 50px;
+
+    max-height: 50px;
+
+    font-size: 12px;
+  }
+}
+
+
+/* =========================================================
    VERY SMALL PHONES
-========================================= */
+========================================================= */
 
 @media (max-width: 360px) {
 
-  .card-page {
+  .networking-page {
     padding:
-      32px
+      25px
       12px
-      40px;
+      50px;
   }
 
-  .card-wrapper {
-    height: 235px;
-
-    margin-top: 30px;
+  .networking-header h1 {
+    font-size: 40px;
   }
 
-  .card-front,
-  .card-back {
-    padding: 19px;
+  .section-heading h2 {
+    font-size: 25px;
   }
 
-  .card-back h2 {
-    font-size: 22px;
+  .create-meeting {
+    padding:
+      22px
+      15px;
   }
 
-  .contact-details {
-    gap: 8px;
-
-    margin-top: 17px;
+  .meeting-card {
+    padding:
+      22px
+      15px;
   }
 
-  .contact-item {
-    font-size: 12px;
+  .meeting-card h3 {
+    font-size: 25px;
   }
 
-  .contact-item svg {
-    width: 16px;
-    height: 16px;
+  .edit-modal {
+    padding:
+      20px
+      15px;
   }
 
-  .flip-hint {
-    font-size: 8px;
+  .edit-actions {
+    gap: 6px;
   }
 
+  .edit-cancel-button,
+  .edit-save-button {
+    height: 48px;
+
+    min-height: 48px;
+
+    max-height: 48px;
+
+    padding:
+      0
+      6px;
+
+    font-size: 11px;
+  }
 }
