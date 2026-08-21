@@ -1,6 +1,15 @@
 "use client";
 
-import { useRef, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
+import type {
+  MouseEvent,
+} from "react";
+
 import { toPng } from "html-to-image";
 import { jsPDF } from "jspdf";
 
@@ -12,313 +21,534 @@ import {
 } from "lucide-react";
 
 export default function Home() {
-  const [flipped, setFlipped] = useState(false);
-  const [showEmail, setShowEmail] = useState(false);
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  // =========================================
+  // CARD STATE
+  // =========================================
+
+  const [flipped, setFlipped] =
+    useState(false);
+
+  // =========================================
+  // DOWNLOAD MODAL
+  // =========================================
+
+  const [showEmail, setShowEmail] =
+    useState(false);
+
+  const [name, setName] =
+    useState("");
+
+  const [email, setEmail] =
+    useState("");
+
+  const [message, setMessage] =
+    useState("");
+
+  const [submitting, setSubmitting] =
+    useState(false);
+
+  // =========================================
+  // QR / MEETING SESSION
+  // =========================================
+
+  const [sessionCode, setSessionCode] =
+    useState("");
 
   // =========================================
   // CARD REFERENCES
   // =========================================
 
-  const frontCardRef = useRef<HTMLDivElement | null>(null);
-  const backCardRef = useRef<HTMLDivElement | null>(null);
+  const frontCardRef =
+    useRef<HTMLDivElement | null>(null);
+
+  const backCardRef =
+    useRef<HTMLDivElement | null>(null);
+
+  // =========================================
+  // READ SESSION CODE FROM QR URL
+  // =========================================
+
+  useEffect(() => {
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const session =
+      params.get("session");
+
+    if (session) {
+      setSessionCode(
+        session.trim()
+      );
+    }
+  }, []);
 
   // =========================================
   // DOWNLOAD + GENERATE TWO-SIDED PDF
   // RETURNS BASE64 PDF FOR EMAIL
   // =========================================
 
-  const downloadCard = async (): Promise<string> => {
-    const frontCard = frontCardRef.current;
-    const backCard = backCardRef.current;
+  const downloadCard =
+    async (): Promise<string> => {
+      const frontCard =
+        frontCardRef.current;
 
-    if (!frontCard || !backCard) {
-      throw new Error("Card elements not found.");
+      const backCard =
+        backCardRef.current;
+
+      if (
+        !frontCard ||
+        !backCard
+      ) {
+        throw new Error(
+          "Card elements not found."
+        );
+      }
+
+      // =======================================
+      // CARD SIZE
+      // =======================================
+
+      const pdfWidth = 85.6;
+      const pdfHeight = 53.8;
+
+      // =======================================
+      // CAPTURE FRONT
+      // =======================================
+
+      const frontImage =
+        await toPng(frontCard, {
+          pixelRatio: 3,
+          cacheBust: true,
+          backgroundColor: "#080808",
+
+          style: {
+            transform: "none",
+            backfaceVisibility:
+              "visible",
+          },
+        });
+
+      // =======================================
+      // CAPTURE BACK
+      // =======================================
+
+      const backImage =
+        await toPng(backCard, {
+          pixelRatio: 3,
+          cacheBust: true,
+          backgroundColor: "#101010",
+
+          style: {
+            transform: "none",
+            backfaceVisibility:
+              "visible",
+          },
+        });
+
+      // =======================================
+      // CREATE PDF
+      // =======================================
+
+      const pdf =
+        new jsPDF({
+          orientation: "landscape",
+          unit: "mm",
+          format: [
+            pdfWidth,
+            pdfHeight,
+          ],
+          compress: true,
+        });
+
+      // =======================================
+      // PAGE 1 — FRONT
+      // =======================================
+
+      pdf.addImage(
+        frontImage,
+        "PNG",
+        0,
+        0,
+        pdfWidth,
+        pdfHeight,
+        undefined,
+        "FAST"
+      );
+
+      // =======================================
+      // PAGE 2 — BACK
+      // =======================================
+
+      pdf.addPage([
+        pdfWidth,
+        pdfHeight,
+      ]);
+
+      pdf.addImage(
+        backImage,
+        "PNG",
+        0,
+        0,
+        pdfWidth,
+        pdfHeight,
+        undefined,
+        "FAST"
+      );
+
+      // =======================================
+      // CREATE PDF BLOB
+      // =======================================
+
+      const pdfBlob =
+        pdf.output("blob");
+
+      // =======================================
+      // DOWNLOAD PDF
+      // =======================================
+
+      const blobUrl =
+        URL.createObjectURL(
+          pdfBlob
+        );
+
+      const link =
+        document.createElement(
+          "a"
+        );
+
+      link.href = blobUrl;
+
+      link.download =
+        "Krinsh-Panchal-Digital-Card.pdf";
+
+      link.style.display =
+        "none";
+
+      document.body.appendChild(
+        link
+      );
+
+      link.click();
+
+      document.body.removeChild(
+        link
+      );
+
+      setTimeout(() => {
+        URL.revokeObjectURL(
+          blobUrl
+        );
+      }, 2000);
+
+      // =======================================
+      // GET SAME PDF AS BASE64
+      // =======================================
+
+      const pdfDataUri =
+        pdf.output(
+          "datauristring"
+        );
+
+      const pdfBase64 =
+        pdfDataUri.split(",")[1];
+
+      if (!pdfBase64) {
+        throw new Error(
+          "Unable to create PDF data."
+        );
+      }
+
+      return pdfBase64;
+    };
+
+  // =========================================
+  // SAVE LEAD
+  // =========================================
+
+  const saveLead = async (
+    visitorName: string,
+    visitorEmail: string
+  ) => {
+    try {
+      const response =
+        await fetch(
+          "/api/leads",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+
+            body: JSON.stringify({
+              name: visitorName,
+              email: visitorEmail,
+              sessionCode:
+                sessionCode || "",
+            }),
+          }
+        );
+
+      const data =
+        await response.json();
+
+      console.log(
+        "LEAD API RESPONSE:",
+        data
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          data?.error ||
+            "Unable to save lead."
+        );
+      }
+
+      console.log(
+        "Lead saved successfully."
+      );
+
+      return true;
+    } catch (error) {
+      console.error(
+        "SAVE LEAD ERROR:",
+        error
+      );
+
+      return false;
     }
-
-    // =========================================
-    // CARD SIZE
-    // =========================================
-
-    const pdfWidth = 85.6;
-    const pdfHeight = 53.8;
-
-    // =========================================
-    // CAPTURE FRONT
-    // =========================================
-
-    const frontImage = await toPng(frontCard, {
-      pixelRatio: 3,
-      cacheBust: true,
-      backgroundColor: "#080808",
-
-      style: {
-        transform: "none",
-        backfaceVisibility: "visible",
-      },
-    });
-
-    // =========================================
-    // CAPTURE BACK
-    // =========================================
-
-    const backImage = await toPng(backCard, {
-      pixelRatio: 3,
-      cacheBust: true,
-      backgroundColor: "#101010",
-
-      // Remove the CSS rotateY(180deg)
-      // while generating the PDF.
-      style: {
-        transform: "none",
-        backfaceVisibility: "visible",
-      },
-    });
-
-    // =========================================
-    // CREATE PDF
-    // =========================================
-
-    const pdf = new jsPDF({
-      orientation: "landscape",
-      unit: "mm",
-      format: [pdfWidth, pdfHeight],
-      compress: true,
-    });
-
-    // =========================================
-    // PAGE 1 — FRONT
-    // =========================================
-
-    pdf.addImage(
-      frontImage,
-      "PNG",
-      0,
-      0,
-      pdfWidth,
-      pdfHeight,
-      undefined,
-      "FAST"
-    );
-
-    // =========================================
-    // PAGE 2 — BACK
-    // =========================================
-
-    pdf.addPage([pdfWidth, pdfHeight]);
-
-    pdf.addImage(
-      backImage,
-      "PNG",
-      0,
-      0,
-      pdfWidth,
-      pdfHeight,
-      undefined,
-      "FAST"
-    );
-
-    // =========================================
-    // CREATE PDF BLOB
-    // =========================================
-
-    const pdfBlob = pdf.output("blob");
-
-    // =========================================
-    // DOWNLOAD PDF IMMEDIATELY
-    // =========================================
-
-    const blobUrl = URL.createObjectURL(pdfBlob);
-
-    const link = document.createElement("a");
-
-    link.href = blobUrl;
-    link.download = "Krinsh-Panchal-Digital-Card.pdf";
-    link.style.display = "none";
-
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    // Clean object URL
-    setTimeout(() => {
-      URL.revokeObjectURL(blobUrl);
-    }, 2000);
-
-    // =========================================
-    // GET SAME PDF AS BASE64
-    // FOR EMAIL ATTACHMENT
-    // =========================================
-
-    const pdfDataUri = pdf.output("datauristring");
-
-    const pdfBase64 = pdfDataUri.split(",")[1];
-
-    if (!pdfBase64) {
-      throw new Error("Unable to create PDF data.");
-    }
-
-    // Return the exact same PDF
-    return pdfBase64;
   };
 
   // =========================================
   // SEND SAME PDF BY EMAIL
   // =========================================
 
-  const sendEmailInBackground = async (
-    userEmail: string,
-    pdfBase64: string
-  ) => {
-    try {
-      const response = await fetch("/api/send-card", {
-        method: "POST",
+  const sendEmailInBackground =
+    async (
+      userEmail: string,
+      pdfBase64: string
+    ) => {
+      try {
+        const response =
+          await fetch(
+            "/api/send-card",
+            {
+              method: "POST",
 
-        headers: {
-          "Content-Type": "application/json",
-        },
+              headers: {
+                "Content-Type":
+                  "application/json",
+              },
 
-        body: JSON.stringify({
-          email: userEmail,
-          cardPdf: pdfBase64,
-        }),
-      });
+              body: JSON.stringify({
+                email: userEmail,
+                cardPdf:
+                  pdfBase64,
+              }),
+            }
+          );
 
-      const data = await response.json();
+        const data =
+          await response.json();
 
-      console.log("EMAIL API RESPONSE:", data);
+        console.log(
+          "EMAIL API RESPONSE:",
+          data
+        );
 
-      if (!response.ok) {
-        throw new Error(
-          data?.error || "Unable to send email."
+        if (!response.ok) {
+          throw new Error(
+            data?.error ||
+              "Unable to send email."
+          );
+        }
+
+        console.log(
+          "Email request successful."
+        );
+      } catch (error) {
+        console.error(
+          "BACKGROUND EMAIL ERROR:",
+          error
         );
       }
-
-      console.log("Email request successful.");
-    } catch (error) {
-      console.error(
-        "BACKGROUND EMAIL ERROR:",
-        error
-      );
-    }
-  };
+    };
 
   // =========================================
-  // DOWNLOAD + EMAIL
+  // DOWNLOAD + SAVE LEAD + EMAIL
   // =========================================
 
-  const handleDownload = async () => {
-    setMessage("");
+  const handleDownload =
+    async () => {
+      setMessage("");
 
-    const cleanEmail = email.trim();
+      const cleanName =
+        name.trim();
 
-    // =========================================
-    // VALIDATE EMAIL
-    // =========================================
-
-    if (!cleanEmail) {
-      setMessage("Please enter your email address.");
-      return;
-    }
-
-    if (
-      !cleanEmail.includes("@") ||
-      !cleanEmail.includes(".")
-    ) {
-      setMessage("Please enter a valid email address.");
-      return;
-    }
-
-    try {
-      // =======================================
-      // GENERATE + DOWNLOAD PDF
-      // =======================================
-
-      const pdfBase64 = await downloadCard();
+      const cleanEmail =
+        email.trim();
 
       // =======================================
-      // CLOSE MODAL IMMEDIATELY
+      // VALIDATE NAME
       // =======================================
 
-      setShowEmail(false);
+      if (!cleanName) {
+        setMessage(
+          "Please enter your name."
+        );
+
+        return;
+      }
 
       // =======================================
-      // CLEAR EMAIL
+      // VALIDATE EMAIL
       // =======================================
 
-      setEmail("");
+      if (!cleanEmail) {
+        setMessage(
+          "Please enter your email address."
+        );
 
-      // =======================================
-      // SHOW MESSAGE IMMEDIATELY
-      // =======================================
+        return;
+      }
 
-      setMessage(
-        "Card downloaded. Email is being sent..."
-      );
+      if (
+        !cleanEmail.includes(
+          "@"
+        ) ||
+        !cleanEmail.includes(
+          "."
+        )
+      ) {
+        setMessage(
+          "Please enter a valid email address."
+        );
 
-      // =======================================
-      // SEND SAME PDF IN BACKGROUND
-      // =======================================
+        return;
+      }
 
-      void sendEmailInBackground(
-        cleanEmail,
-        pdfBase64
-      );
-    } catch (error) {
-      console.error(
-        "CARD DOWNLOAD ERROR:",
-        error
-      );
+      try {
+        setSubmitting(true);
 
-      setMessage(
-        "Unable to download the card. Please try again."
-      );
-    }
-  };
+        // =====================================
+        // GENERATE + DOWNLOAD PDF
+        // =====================================
+
+        const pdfBase64 =
+          await downloadCard();
+
+        // =====================================
+        // SAVE LEAD
+        // =====================================
+
+        await saveLead(
+          cleanName,
+          cleanEmail
+        );
+
+        // =====================================
+        // CLOSE MODAL
+        // =====================================
+
+        setShowEmail(false);
+
+        // =====================================
+        // CLEAR FORM
+        // =====================================
+
+        setName("");
+        setEmail("");
+
+        // =====================================
+        // SHOW SUCCESS
+        // =====================================
+
+        setMessage(
+          "Card downloaded. Email is being sent..."
+        );
+
+        // =====================================
+        // SEND CARD EMAIL
+        // =====================================
+
+        void sendEmailInBackground(
+          cleanEmail,
+          pdfBase64
+        );
+      } catch (error) {
+        console.error(
+          "CARD DOWNLOAD ERROR:",
+          error
+        );
+
+        setMessage(
+          "Unable to download the card. Please try again."
+        );
+      } finally {
+        setSubmitting(false);
+      }
+    };
 
   // =========================================
   // CARD FLIP
   // =========================================
 
   const handleCardClick = (
-    event: React.MouseEvent<HTMLDivElement>
+    event: MouseEvent<HTMLDivElement>
   ) => {
-    const target = event.target as HTMLElement;
+    const target =
+      event.target as HTMLElement;
 
     // Don't flip when clicking
     // phone/email/website/location links.
-    if (target.closest("a")) {
+    if (
+      target.closest("a")
+    ) {
       return;
     }
 
-    setFlipped((previous) => !previous);
+    setFlipped(
+      (previous) => !previous
+    );
   };
 
   // =========================================
   // OPEN DOWNLOAD MODAL
   // =========================================
 
-  const openDownloadModal = () => {
-    setMessage("");
-    setShowEmail(true);
-  };
+  const openDownloadModal =
+    () => {
+      setMessage("");
+      setShowEmail(true);
+    };
 
   // =========================================
   // CLOSE DOWNLOAD MODAL
   // =========================================
 
-  const closeDownloadModal = () => {
-    setShowEmail(false);
-    setMessage("");
-  };
+  const closeDownloadModal =
+    () => {
+      if (submitting) {
+        return;
+      }
+
+      setShowEmail(false);
+      setMessage("");
+    };
+
+  // =========================================
+  // RENDER
+  // =========================================
 
   return (
     <main className="card-page">
 
       {/* =====================================
           INTRO
-      ===================================== */}
+      ====================================== */}
 
       <section className="intro">
 
@@ -342,18 +572,21 @@ export default function Home() {
 
       </section>
 
-
       {/* =====================================
           DIGITAL CARD
-      ===================================== */}
+      ====================================== */}
 
       <section className="card-wrapper">
 
         <div
           className={`business-card ${
-            flipped ? "flipped" : ""
+            flipped
+              ? "flipped"
+              : ""
           }`}
-          onClick={handleCardClick}
+          onClick={
+            handleCardClick
+          }
         >
 
           {/* =================================
@@ -361,7 +594,9 @@ export default function Home() {
           ================================= */}
 
           <div
-            ref={frontCardRef}
+            ref={
+              frontCardRef
+            }
             className="card-face card-front"
           >
 
@@ -377,7 +612,6 @@ export default function Home() {
 
             </div>
 
-
             <div className="card-center">
 
               <p className="card-label">
@@ -389,7 +623,6 @@ export default function Home() {
               </h2>
 
             </div>
-
 
             <div className="card-bottom">
 
@@ -405,13 +638,14 @@ export default function Home() {
 
           </div>
 
-
           {/* =================================
               BACK
           ================================= */}
 
           <div
-            ref={backCardRef}
+            ref={
+              backCardRef
+            }
             className="card-face card-back"
           >
 
@@ -427,7 +661,6 @@ export default function Home() {
 
             </div>
 
-
             {/* CONTACT DETAILS */}
 
             <div className="contact-details">
@@ -437,7 +670,9 @@ export default function Home() {
               <a
                 href="tel:+919157579359"
                 className="contact-item"
-                onClick={(event) => {
+                onClick={(
+                  event
+                ) => {
                   event.stopPropagation();
                 }}
               >
@@ -453,13 +688,14 @@ export default function Home() {
 
               </a>
 
-
               {/* EMAIL */}
 
               <a
                 href="mailto:krinsh0906@gmail.com"
                 className="contact-item"
-                onClick={(event) => {
+                onClick={(
+                  event
+                ) => {
                   event.stopPropagation();
                 }}
               >
@@ -475,7 +711,6 @@ export default function Home() {
 
               </a>
 
-
               {/* WEBSITE */}
 
               <a
@@ -483,7 +718,9 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="contact-item"
-                onClick={(event) => {
+                onClick={(
+                  event
+                ) => {
                   event.stopPropagation();
                 }}
               >
@@ -499,7 +736,6 @@ export default function Home() {
 
               </a>
 
-
               {/* LOCATION */}
 
               <a
@@ -507,7 +743,9 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="contact-item"
-                onClick={(event) => {
+                onClick={(
+                  event
+                ) => {
                   event.stopPropagation();
                 }}
               >
@@ -525,7 +763,6 @@ export default function Home() {
 
             </div>
 
-
             {/* FLIP HINT */}
 
             <p className="flip-hint">
@@ -538,15 +775,16 @@ export default function Home() {
 
       </section>
 
-
       {/* =====================================
           DOWNLOAD BUTTON
-      ===================================== */}
+      ====================================== */}
 
       <button
         type="button"
         className="download-button"
-        onClick={openDownloadModal}
+        onClick={
+          openDownloadModal
+        }
       >
 
         <span>
@@ -557,32 +795,35 @@ export default function Home() {
 
       </button>
 
-
       {/* =====================================
           SUCCESS MESSAGE
-      ===================================== */}
+      ====================================== */}
 
-      {message && !showEmail && (
-        <div className="success-message">
-          {message}
-        </div>
-      )}
-
+      {message &&
+        !showEmail && (
+          <div className="success-message">
+            {message}
+          </div>
+        )}
 
       {/* =====================================
-          EMAIL MODAL
-      ===================================== */}
+          NAME + EMAIL MODAL
+      ====================================== */}
 
       {showEmail && (
 
         <div
           className="modal-overlay"
-          onClick={closeDownloadModal}
+          onClick={
+            closeDownloadModal
+          }
         >
 
           <div
             className="email-modal"
-            onClick={(event) => {
+            onClick={(
+              event
+            ) => {
               event.stopPropagation();
             }}
           >
@@ -592,11 +833,15 @@ export default function Home() {
             <button
               type="button"
               className="close-button"
-              onClick={closeDownloadModal}
+              onClick={
+                closeDownloadModal
+              }
+              disabled={
+                submitting
+              }
             >
               ×
             </button>
-
 
             {/* ICON */}
 
@@ -604,43 +849,75 @@ export default function Home() {
               ✉️
             </div>
 
-
             {/* TITLE */}
 
             <h2>
               Get my card
             </h2>
 
-
             {/* DESCRIPTION */}
 
             <p>
-              Enter your email and we&apos;ll
-              send you my digital card while
-              downloading both sides to your phone.
+              Enter your name and email
+              and I&apos;ll send you my
+              digital card.
             </p>
 
+            {/* NAME */}
 
-            {/* EMAIL INPUT */}
+            <input
+              type="text"
+              placeholder="Your name"
+              value={name}
+              onChange={(
+                event
+              ) => {
+                setName(
+                  event.target.value
+                );
+
+                setMessage("");
+              }}
+              disabled={
+                submitting
+              }
+              autoComplete="name"
+              autoFocus
+            />
+
+            {/* EMAIL */}
 
             <input
               type="email"
               placeholder="your@email.com"
               value={email}
-              onChange={(event) => {
-                setEmail(event.target.value);
+              onChange={(
+                event
+              ) => {
+                setEmail(
+                  event.target.value
+                );
+
                 setMessage("");
               }}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
+              onKeyDown={(
+                event
+              ) => {
+                if (
+                  event.key ===
+                  "Enter"
+                ) {
                   event.preventDefault();
+
                   void handleDownload();
                 }
               }}
+              disabled={
+                submitting
+              }
               inputMode="email"
               autoComplete="email"
             />
-
 
             {/* ERROR */}
 
@@ -650,7 +927,6 @@ export default function Home() {
               </div>
             )}
 
-
             {/* BUTTON */}
 
             <button
@@ -659,16 +935,20 @@ export default function Home() {
               onClick={() => {
                 void handleDownload();
               }}
+              disabled={
+                submitting
+              }
             >
-              Download &amp; Send Card
+              {submitting
+                ? "Preparing Card..."
+                : "Download & Send Card"}
             </button>
-
 
             {/* PRIVACY */}
 
             <p className="privacy-text">
-              Your email is only used to
-              send my card.
+              Your name and email are only
+              used to send my card.
             </p>
 
           </div>

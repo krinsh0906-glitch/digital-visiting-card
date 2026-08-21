@@ -13,9 +13,9 @@ type Meeting = {
   updated_at?: string;
 };
 
-/* =========================================================
-   DATE HELPERS
-========================================================= */
+// ============================================
+// DATE HELPERS
+// ============================================
 
 function getTodayDate() {
   const now = new Date();
@@ -58,10 +58,9 @@ function formatDate(
   );
 }
 
-
-/* =========================================================
-   SAFE JSON READER
-========================================================= */
+// ============================================
+// SAFE JSON
+// ============================================
 
 async function readJson(
   response: Response
@@ -79,20 +78,17 @@ async function readJson(
   }
 }
 
-
-/* =========================================================
-   PAGE
-========================================================= */
+// ============================================
+// PAGE
+// ============================================
 
 export default function NetworkingPage() {
-
   const createSectionRef =
     useRef<HTMLElement | null>(null);
 
-
-  /* =======================================================
-     MEETINGS
-  ======================================================= */
+  // =========================================
+  // MEETINGS
+  // =========================================
 
   const [meetings, setMeetings] =
     useState<Meeting[]>([]);
@@ -100,10 +96,9 @@ export default function NetworkingPage() {
   const [loading, setLoading] =
     useState(true);
 
-
-  /* =======================================================
-     CREATE
-  ======================================================= */
+  // =========================================
+  // CREATE
+  // =========================================
 
   const [creating, setCreating] =
     useState(false);
@@ -117,13 +112,9 @@ export default function NetworkingPage() {
   const [sessionDate, setSessionDate] =
     useState(getTodayDate());
 
-
-  /* =======================================================
-     EDIT
-  ======================================================= */
-
-  const [savingEdit, setSavingEdit] =
-    useState(false);
+  // =========================================
+  // EDIT
+  // =========================================
 
   const [editingMeeting, setEditingMeeting] =
     useState<Meeting | null>(null);
@@ -137,29 +128,29 @@ export default function NetworkingPage() {
   const [editSessionDate, setEditSessionDate] =
     useState(getTodayDate());
 
+  const [savingEdit, setSavingEdit] =
+    useState(false);
 
-  /* =======================================================
-     DELETE
-  ======================================================= */
-
-  const [deletingId, setDeletingId] =
-    useState<string | null>(null);
-
-  const [deleteTarget, setDeleteTarget] =
-    useState<Meeting | null>(null);
-
-
-  /* =======================================================
-     MENU
-  ======================================================= */
+  // =========================================
+  // MENU
+  // =========================================
 
   const [openMenuId, setOpenMenuId] =
     useState<string | null>(null);
 
+  // =========================================
+  // DELETE
+  // =========================================
 
-  /* =======================================================
-     MESSAGES
-  ======================================================= */
+  const [deleteTarget, setDeleteTarget] =
+    useState<Meeting | null>(null);
+
+  const [deletingId, setDeletingId] =
+    useState<string | null>(null);
+
+  // =========================================
+  // MESSAGES
+  // =========================================
 
   const [formMessage, setFormMessage] =
     useState("");
@@ -175,48 +166,14 @@ export default function NetworkingPage() {
       "success"
     );
 
-
-  /* =======================================================
-     CURRENT DATE
-
-     This updates every minute.
-
-     Therefore a meeting automatically changes
-     visually from ACTIVE → CLOSED when its
-     meeting date passes.
-  ======================================================= */
-
-  const [todayDate, setTodayDate] =
-    useState(getTodayDate());
-
-
-  useEffect(() => {
-
-    const interval =
-      window.setInterval(() => {
-
-        setTodayDate(
-          getTodayDate()
-        );
-
-      }, 60 * 1000);
-
-    return () => {
-      window.clearInterval(interval);
-    };
-
-  }, []);
-
-
-  /* =======================================================
-     TOAST
-  ======================================================= */
+  // =========================================
+  // TOAST
+  // =========================================
 
   const showToast = (
     message: string,
     type: "success" | "error" = "success"
   ) => {
-
     setToastMessage(message);
     setToastType(type);
 
@@ -225,40 +182,12 @@ export default function NetworkingPage() {
     }, 3000);
   };
 
-
-  /* =======================================================
-     CHECK MEETING STATUS
-
-     A meeting is considered active only if:
-
-     1. Database says it is active
-     2. Meeting date is today or in the future
-
-     If the date has passed, UI shows CLOSED.
-  ======================================================= */
-
-  const isMeetingActive = (
-    meeting: Meeting
-  ) => {
-
-    if (!meeting.is_active) {
-      return false;
-    }
-
-    return (
-      meeting.session_date >= todayDate
-    );
-  };
-
-
-  /* =======================================================
-     LOAD MEETINGS
-  ======================================================= */
+  // =========================================
+  // LOAD MEETINGS
+  // =========================================
 
   const loadMeetings = async () => {
-
     try {
-
       setLoading(true);
       setFormError("");
 
@@ -274,7 +203,6 @@ export default function NetworkingPage() {
         await readJson(response);
 
       if (!response.ok) {
-
         throw new Error(
           data?.error ||
             "Unable to load meetings."
@@ -282,15 +210,11 @@ export default function NetworkingPage() {
       }
 
       setMeetings(
-        Array.isArray(
-          data?.meetings
-        )
+        Array.isArray(data?.meetings)
           ? data.meetings
           : []
       );
-
     } catch (error) {
-
       console.error(
         "LOAD MEETINGS ERROR:",
         error
@@ -301,32 +225,20 @@ export default function NetworkingPage() {
           ? error.message
           : "Unable to load meetings."
       );
-
     } finally {
-
       setLoading(false);
-
     }
   };
 
-
-  /* =======================================================
-     INITIAL LOAD
-  ======================================================= */
-
   useEffect(() => {
-
     void loadMeetings();
-
   }, []);
 
-
-  /* =======================================================
-     SCROLL TO CREATE
-  ======================================================= */
+  // =========================================
+  // SCROLL TO CREATE
+  // =========================================
 
   const scrollToCreate = () => {
-
     createSectionRef.current?.scrollIntoView(
       {
         behavior: "smooth",
@@ -335,56 +247,45 @@ export default function NetworkingPage() {
     );
 
     window.setTimeout(() => {
-
       const input =
         document.getElementById(
           "meeting-title"
         );
 
       input?.focus();
-
     }, 500);
   };
 
-
-  /* =======================================================
-     CREATE MEETING
-  ======================================================= */
+  // =========================================
+  // CREATE MEETING
+  // =========================================
 
   const createMeeting = async () => {
-
     setFormMessage("");
     setFormError("");
 
     if (!title.trim()) {
-
       setFormError(
         "Please enter a meeting or event name."
       );
-
       return;
     }
 
     if (!location.trim()) {
-
       setFormError(
         "Please enter the location."
       );
-
       return;
     }
 
     if (!sessionDate) {
-
       setFormError(
         "Please select the meeting date."
       );
-
       return;
     }
 
     try {
-
       setCreating(true);
 
       const response = await fetch(
@@ -409,7 +310,6 @@ export default function NetworkingPage() {
         await readJson(response);
 
       if (!response.ok) {
-
         throw new Error(
           data?.error ||
             "Unable to create meeting."
@@ -418,7 +318,6 @@ export default function NetworkingPage() {
 
       setTitle("");
       setLocation("");
-
       setSessionDate(
         getTodayDate()
       );
@@ -430,13 +329,9 @@ export default function NetworkingPage() {
       );
 
       window.setTimeout(() => {
-
         setFormMessage("");
-
       }, 3000);
-
     } catch (error) {
-
       console.error(
         "CREATE MEETING ERROR:",
         error
@@ -447,22 +342,22 @@ export default function NetworkingPage() {
           ? error.message
           : "Unable to create meeting."
       );
-
     } finally {
-
       setCreating(false);
-
     }
   };
 
-
-  /* =======================================================
-     OPEN EDIT
-  ======================================================= */
+  // =========================================
+  // OPEN EDIT
+  // =========================================
 
   const openEdit = (
     meeting: Meeting
   ) => {
+    // Closed meetings are read-only.
+    if (!meeting.is_active) {
+      return;
+    }
 
     setOpenMenuId(null);
 
@@ -482,13 +377,11 @@ export default function NetworkingPage() {
     );
   };
 
-
-  /* =======================================================
-     CLOSE EDIT
-  ======================================================= */
+  // =========================================
+  // CLOSE EDIT
+  // =========================================
 
   const closeEdit = () => {
-
     if (savingEdit) {
       return;
     }
@@ -504,49 +397,53 @@ export default function NetworkingPage() {
     );
   };
 
-
-  /* =======================================================
-     SAVE EDIT
-  ======================================================= */
+  // =========================================
+  // SAVE EDIT
+  // =========================================
 
   const saveEdit = async () => {
-
     if (!editingMeeting) {
       return;
     }
 
-    if (!editTitle.trim()) {
+    // Extra protection:
+    // closed meetings cannot be edited.
+    if (!editingMeeting.is_active) {
+      closeEdit();
 
+      showToast(
+        "Closed meetings cannot be edited.",
+        "error"
+      );
+
+      return;
+    }
+
+    if (!editTitle.trim()) {
       showToast(
         "Meeting name is required.",
         "error"
       );
-
       return;
     }
 
     if (!editLocation.trim()) {
-
       showToast(
         "Location is required.",
         "error"
       );
-
       return;
     }
 
     if (!editSessionDate) {
-
       showToast(
         "Meeting date is required.",
         "error"
       );
-
       return;
     }
 
     try {
-
       setSavingEdit(true);
 
       const response = await fetch(
@@ -578,7 +475,6 @@ export default function NetworkingPage() {
         await readJson(response);
 
       if (!response.ok) {
-
         throw new Error(
           data?.error ||
             "Unable to update meeting."
@@ -601,9 +497,7 @@ export default function NetworkingPage() {
         "Meeting updated successfully.",
         "success"
       );
-
     } catch (error) {
-
       console.error(
         "UPDATE MEETING ERROR:",
         error
@@ -615,41 +509,50 @@ export default function NetworkingPage() {
           : "Unable to update meeting.",
         "error"
       );
-
     } finally {
-
       setSavingEdit(false);
-
     }
   };
 
-
-  /* =======================================================
-     ASK DELETE
-  ======================================================= */
+  // =========================================
+  // ASK DELETE
+  // =========================================
 
   const askDelete = (
     meeting: Meeting
   ) => {
+    // NEVER allow delete for closed meetings.
+    if (!meeting.is_active) {
+      return;
+    }
 
     setOpenMenuId(null);
 
     setDeleteTarget(meeting);
   };
 
-
-  /* =======================================================
-     DELETE MEETING
-  ======================================================= */
+  // =========================================
+  // DELETE MEETING
+  // =========================================
 
   const deleteMeeting = async () => {
-
     if (!deleteTarget) {
       return;
     }
 
-    try {
+    // Extra frontend protection.
+    if (!deleteTarget.is_active) {
+      setDeleteTarget(null);
 
+      showToast(
+        "Closed meetings cannot be deleted.",
+        "error"
+      );
+
+      return;
+    }
+
+    try {
       setDeletingId(
         deleteTarget.id
       );
@@ -667,7 +570,6 @@ export default function NetworkingPage() {
         await readJson(response);
 
       if (!response.ok) {
-
         throw new Error(
           data?.error ||
             "Unable to delete meeting."
@@ -685,9 +587,7 @@ export default function NetworkingPage() {
         `"${deletedTitle}" deleted successfully.`,
         "success"
       );
-
     } catch (error) {
-
       console.error(
         "DELETE MEETING ERROR:",
         error
@@ -699,23 +599,18 @@ export default function NetworkingPage() {
           : "Unable to delete meeting.",
         "error"
       );
-
     } finally {
-
       setDeletingId(null);
-
     }
   };
 
-
-  /* =======================================================
-     MEETING URL
-  ======================================================= */
+  // =========================================
+  // MEETING URL
+  // =========================================
 
   const getMeetingUrl = (
     sessionCode: string
   ) => {
-
     if (
       typeof window ===
       "undefined"
@@ -728,15 +623,13 @@ export default function NetworkingPage() {
     )}`;
   };
 
-
-  /* =======================================================
-     QR
-  ======================================================= */
+  // =========================================
+  // QR
+  // =========================================
 
   const openQR = (
     sessionCode: string
   ) => {
-
     const meetingUrl =
       getMeetingUrl(sessionCode);
 
@@ -756,15 +649,13 @@ export default function NetworkingPage() {
     );
   };
 
-
-  /* =======================================================
-     COPY LINK
-  ======================================================= */
+  // =========================================
+  // COPY LINK
+  // =========================================
 
   const copyMeetingLink = async (
     sessionCode: string
   ) => {
-
     const url =
       getMeetingUrl(sessionCode);
 
@@ -773,7 +664,6 @@ export default function NetworkingPage() {
     }
 
     try {
-
       await navigator.clipboard.writeText(
         url
       );
@@ -784,9 +674,7 @@ export default function NetworkingPage() {
         "Meeting link copied.",
         "success"
       );
-
     } catch (error) {
-
       console.error(
         "COPY LINK ERROR:",
         error
@@ -799,19 +687,16 @@ export default function NetworkingPage() {
     }
   };
 
-
-  /* =======================================================
-     CLOSE MENUS
-  ======================================================= */
+  // =========================================
+  // CLOSE MENUS OUTSIDE
+  // =========================================
 
   useEffect(() => {
-
     const handleOutsideClick = () => {
       setOpenMenuId(null);
     };
 
     if (openMenuId) {
-
       document.addEventListener(
         "click",
         handleOutsideClick
@@ -819,31 +704,25 @@ export default function NetworkingPage() {
     }
 
     return () => {
-
       document.removeEventListener(
         "click",
         handleOutsideClick
       );
-
     };
-
   }, [openMenuId]);
 
-
-  /* =======================================================
-     RENDER
-  ======================================================= */
+  // =========================================
+  // RENDER
+  // =========================================
 
   return (
     <main className="networking-page">
 
-
-      {/* =====================================================
+      {/* =====================================
           TOAST
-      ===================================================== */}
+      ====================================== */}
 
       {toastMessage && (
-
         <div
           className={`networking-toast ${
             toastType === "error"
@@ -851,7 +730,6 @@ export default function NetworkingPage() {
               : "toast-success"
           }`}
         >
-
           <span className="toast-icon">
             {toastType === "error"
               ? "!"
@@ -861,14 +739,12 @@ export default function NetworkingPage() {
           <span>
             {toastMessage}
           </span>
-
         </div>
       )}
 
-
-      {/* =====================================================
+      {/* =====================================
           HEADER
-      ===================================================== */}
+      ====================================== */}
 
       <header className="networking-header">
 
@@ -887,10 +763,9 @@ export default function NetworkingPage() {
 
       </header>
 
-
-      {/* =====================================================
+      {/* =====================================
           CREATE MEETING
-      ===================================================== */}
+      ====================================== */}
 
       <section
         ref={createSectionRef}
@@ -914,9 +789,7 @@ export default function NetworkingPage() {
 
         </div>
 
-
         <div className="meeting-form">
-
 
           {/* EVENT */}
 
@@ -941,7 +814,6 @@ export default function NetworkingPage() {
 
           </div>
 
-
           {/* LOCATION */}
 
           <div className="form-group">
@@ -964,7 +836,6 @@ export default function NetworkingPage() {
             />
 
           </div>
-
 
           {/* DATE */}
 
@@ -993,28 +864,21 @@ export default function NetworkingPage() {
 
           </div>
 
-
           {/* ERROR */}
 
           {formError && (
-
             <div className="networking-message networking-error">
               {formError}
             </div>
-
           )}
-
 
           {/* SUCCESS */}
 
           {formMessage && (
-
             <div className="networking-message networking-success">
               {formMessage}
             </div>
-
           )}
-
 
           {/* CREATE */}
 
@@ -1026,21 +890,18 @@ export default function NetworkingPage() {
             }}
             disabled={creating}
           >
-
             {creating
               ? "Creating..."
               : "+ Create Meeting"}
-
           </button>
 
         </div>
 
       </section>
 
-
-      {/* =====================================================
+      {/* =====================================
           MEETINGS
-      ===================================================== */}
+      ====================================== */}
 
       <section className="meetings-section">
 
@@ -1064,23 +925,18 @@ export default function NetworkingPage() {
 
         </div>
 
-
         {/* LOADING */}
 
         {loading && (
-
           <div className="empty-state">
             Loading meetings...
           </div>
-
         )}
-
 
         {/* EMPTY */}
 
         {!loading &&
           meetings.length === 0 && (
-
             <div className="empty-state">
 
               <button
@@ -1111,70 +967,63 @@ export default function NetworkingPage() {
             </div>
           )}
 
-
         {/* MEETING LIST */}
 
         {!loading &&
           meetings.length > 0 && (
-
             <div className="meeting-list">
 
               {meetings.map(
-                (meeting) => {
+                (meeting) => (
+                  <article
+                    className={`meeting-card ${
+                      !meeting.is_active
+                        ? "is-closed"
+                        : ""
+                    }`}
+                    key={meeting.id}
+                  >
 
-                  const active =
-                    isMeetingActive(
-                      meeting
-                    );
+                    {/* CARD TOP */}
 
-                  return (
+                    <div className="meeting-card-top">
 
-                    <article
-                      className={`meeting-card ${
-                        active
-                          ? ""
-                          : "is-closed"
-                      }`}
-                      key={meeting.id}
-                    >
+                      <div>
 
+                        <span
+                          className={`active-badge ${
+                            !meeting.is_active
+                              ? "closed"
+                              : ""
+                          }`}
+                        >
+                          {meeting.is_active
+                            ? "ACTIVE"
+                            : "CLOSED"}
+                        </span>
 
-                      {/* CARD TOP */}
+                        <h3>
+                          {meeting.title}
+                        </h3>
 
-                      <div className="meeting-card-top">
+                      </div>
 
-                        <div>
+                      <div className="meeting-card-actions">
 
-                          <span
-                            className={`active-badge ${
-                              active
-                                ? ""
-                                : "closed"
-                            }`}
-                          >
+                        <span className="meeting-code">
+                          {
+                            meeting.session_code
+                          }
+                        </span>
 
-                            {active
-                              ? "ACTIVE"
-                              : "CLOSED"}
+                        {/* =================================
+                            THREE DOT MENU
+                            
+                            IMPORTANT:
+                            CLOSED MEETINGS HAVE NO MENU.
+                        ================================== */}
 
-                          </span>
-
-                          <h3>
-                            {meeting.title}
-                          </h3>
-
-                        </div>
-
-
-                        {/* CODE + MENU */}
-
-                        <div className="meeting-card-actions">
-
-                          <span className="meeting-code">
-                            {meeting.session_code}
-                          </span>
-
-
+                        {meeting.is_active && (
                           <div
                             className="menu-wrapper"
                             onClick={(event) =>
@@ -1198,11 +1047,11 @@ export default function NetworkingPage() {
                               ⋮
                             </button>
 
-
                             {openMenuId ===
                               meeting.id && (
-
                               <div className="meeting-menu">
+
+                                {/* EDIT */}
 
                                 <button
                                   type="button"
@@ -1224,6 +1073,7 @@ export default function NetworkingPage() {
 
                                 </button>
 
+                                {/* DELETE */}
 
                                 <button
                                   type="button"
@@ -1249,86 +1099,81 @@ export default function NetworkingPage() {
                             )}
 
                           </div>
-
-                        </div>
-
-                      </div>
-
-
-                      {/* CARD INFO */}
-
-                      <div className="meeting-info">
-
-
-                        {/* LOCATION */}
-
-                        <div className="info-item">
-
-                          <span className="info-label">
-                            LOCATION
-                          </span>
-
-                          <strong>
-                            {meeting.location ||
-                              "Not specified"}
-                          </strong>
-
-                        </div>
-
-
-                        {/* DATE */}
-
-                        <div className="info-item">
-
-                          <span className="info-label">
-                            DATE
-                          </span>
-
-                          <strong>
-                            {formatDate(
-                              meeting.session_date
-                            )}
-                          </strong>
-
-                        </div>
+                        )}
 
                       </div>
 
+                    </div>
 
-                      {/* ACTIONS */}
+                    {/* CARD INFO */}
 
-                      <div className="meeting-actions">
+                    <div className="meeting-info">
 
-                        <button
-                          type="button"
-                          className="qr-button"
-                          onClick={() =>
-                            openQR(
-                              meeting.session_code
-                            )
-                          }
-                        >
-                          Show QR
-                        </button>
+                      {/* LOCATION */}
 
-                        <button
-                          type="button"
-                          className="secondary-button"
-                          onClick={() => {
-                            void copyMeetingLink(
-                              meeting.session_code
-                            );
-                          }}
-                        >
-                          Copy Link
-                        </button>
+                      <div className="info-item">
+
+                        <span className="info-label">
+                          LOCATION
+                        </span>
+
+                        <strong>
+                          {meeting.location ||
+                            "Not specified"}
+                        </strong>
 
                       </div>
 
-                    </article>
+                      {/* DATE */}
 
-                  );
-                }
+                      <div className="info-item">
+
+                        <span className="info-label">
+                          DATE
+                        </span>
+
+                        <strong>
+                          {formatDate(
+                            meeting.session_date
+                          )}
+                        </strong>
+
+                      </div>
+
+                    </div>
+
+                    {/* ACTIONS */}
+
+                    <div className="meeting-actions">
+
+                      <button
+                        type="button"
+                        className="qr-button"
+                        onClick={() =>
+                          openQR(
+                            meeting.session_code
+                          )
+                        }
+                      >
+                        Show QR
+                      </button>
+
+                      <button
+                        type="button"
+                        className="secondary-button"
+                        onClick={() => {
+                          void copyMeetingLink(
+                            meeting.session_code
+                          );
+                        }}
+                      >
+                        Copy Link
+                      </button>
+
+                    </div>
+
+                  </article>
+                )
               )}
 
             </div>
@@ -1336,31 +1181,24 @@ export default function NetworkingPage() {
 
       </section>
 
-
-      {/* =====================================================
+      {/* =====================================
           EDIT MODAL
-      ===================================================== */}
+      ====================================== */}
 
       {editingMeeting && (
-
         <div
           className="modal-backdrop"
           onMouseDown={(event) => {
-
             if (
               event.target ===
               event.currentTarget
             ) {
               closeEdit();
             }
-
           }}
         >
 
           <div className="edit-modal">
-
-
-            {/* MODAL HEADER */}
 
             <div className="modal-header">
 
@@ -1376,19 +1214,16 @@ export default function NetworkingPage() {
 
               </div>
 
-
               <button
                 type="button"
                 className="modal-close"
                 onClick={closeEdit}
                 disabled={savingEdit}
-                aria-label="Close"
               >
                 ×
               </button>
 
             </div>
-
 
             {/* EVENT */}
 
@@ -1412,7 +1247,6 @@ export default function NetworkingPage() {
 
             </div>
 
-
             {/* LOCATION */}
 
             <div className="form-group">
@@ -1434,7 +1268,6 @@ export default function NetworkingPage() {
               />
 
             </div>
-
 
             {/* DATE */}
 
@@ -1458,32 +1291,22 @@ export default function NetworkingPage() {
 
             </div>
 
+            {/* ACTIONS */}
 
-            {/* =================================================
-                EDIT ACTIONS
-
-                IMPORTANT:
-                These buttons use completely separate classes.
-
-                This prevents .create-button from making
-                Save Changes larger than Cancel.
-            ================================================= */}
-
-            <div className="modal-actions edit-actions">
+            <div className="modal-actions">
 
               <button
                 type="button"
-                className="edit-cancel-button"
+                className="secondary-button"
                 onClick={closeEdit}
                 disabled={savingEdit}
               >
                 Cancel
               </button>
 
-
               <button
                 type="button"
-                className="edit-save-button"
+                className="create-button modal-save"
                 onClick={() => {
                   void saveEdit();
                 }}
@@ -1501,56 +1324,42 @@ export default function NetworkingPage() {
         </div>
       )}
 
-
-      {/* =====================================================
-          DELETE MODAL
-      ===================================================== */}
+      {/* =====================================
+          DELETE CONFIRMATION
+      ====================================== */}
 
       {deleteTarget && (
-
         <div
           className="modal-backdrop"
           onMouseDown={(event) => {
-
             if (
               event.target ===
               event.currentTarget
             ) {
               setDeleteTarget(null);
             }
-
           }}
         >
 
           <div className="delete-modal">
 
-
             <div className="delete-icon">
               🗑
             </div>
-
 
             <h2>
               Delete meeting?
             </h2>
 
-
             <p>
-
               Are you sure you want to delete{" "}
-
               <strong>
                 {deleteTarget.title}
               </strong>
-
               ?
-
               <br />
-
               This action cannot be undone.
-
             </p>
-
 
             <div className="modal-actions">
 
@@ -1567,7 +1376,6 @@ export default function NetworkingPage() {
                 Cancel
               </button>
 
-
               <button
                 type="button"
                 className="delete-confirm-button"
@@ -1578,11 +1386,9 @@ export default function NetworkingPage() {
                   deletingId !== null
                 }
               >
-
                 {deletingId
                   ? "Deleting..."
                   : "Delete Meeting"}
-
               </button>
 
             </div>
@@ -1591,6 +1397,740 @@ export default function NetworkingPage() {
 
         </div>
       )}
+
+      {/* =====================================
+          STYLES
+      ====================================== */}
+
+      <style jsx>{`
+
+        .networking-page {
+          min-height: 100vh;
+          padding: 48px 4vw 100px;
+          background: #050505;
+          color: #f5f5f5;
+          box-sizing: border-box;
+        }
+
+        .networking-header {
+          max-width: 1400px;
+          margin: 0 auto 70px;
+        }
+
+        .networking-eyebrow,
+        .section-eyebrow {
+          margin: 0 0 14px;
+          font-size: 10px;
+          letter-spacing: 5px;
+          color: #8494a6;
+          font-weight: 600;
+        }
+
+        .networking-header h1 {
+          margin: 0;
+          font-size: clamp(
+            48px,
+            7vw,
+            86px
+          );
+          line-height: 0.95;
+          font-weight: 400;
+          letter-spacing: -4px;
+        }
+
+        .networking-subtitle {
+          margin: 18px 0 0;
+          color: #8d8d8d;
+          font-size: 14px;
+        }
+
+        .create-meeting,
+        .meetings-section {
+          max-width: 1400px;
+          margin: 0 auto 70px;
+        }
+
+        .create-meeting {
+          padding: 48px;
+          border: 1px solid #292929;
+          border-radius: 24px;
+          background: #0b0b0b;
+          scroll-margin-top: 30px;
+        }
+
+        .section-heading {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 20px;
+          margin-bottom: 38px;
+        }
+
+        .section-heading h2 {
+          margin: 0;
+          font-size: 34px;
+          font-weight: 400;
+          letter-spacing: -1.5px;
+        }
+
+        .meeting-form {
+          display: flex;
+          flex-direction: column;
+          gap: 28px;
+        }
+
+        .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .form-group label {
+          font-size: 14px;
+          color: #c7c7c7;
+        }
+
+        .form-group input {
+          width: 100%;
+          height: 58px;
+          padding: 0 20px;
+          border-radius: 14px;
+          border: 1px solid #303030;
+          background: #080808;
+          color: #f4f4f4;
+          font-size: 16px;
+          outline: none;
+          box-sizing: border-box;
+          transition: 0.2s ease;
+        }
+
+        .form-group input:focus {
+          border-color: #777;
+        }
+
+        .form-group input::placeholder {
+          color: #555;
+        }
+
+        .form-group input[type="date"] {
+          color-scheme: dark;
+        }
+
+        .date-help {
+          margin: 2px 0 0;
+          color: #707070;
+          font-size: 13px;
+        }
+
+        .create-button {
+          width: 100%;
+          min-height: 58px;
+          border: 0;
+          border-radius: 12px;
+          background: #f5f5f5;
+          color: #050505;
+          font-size: 15px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: 0.2s ease;
+        }
+
+        .create-button:hover {
+          background: white;
+          transform: translateY(-1px);
+        }
+
+        .create-button:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          transform: none;
+        }
+
+        .networking-message {
+          padding: 16px 18px;
+          border-radius: 12px;
+          font-size: 14px;
+        }
+
+        .networking-success {
+          border: 1px solid
+            rgba(60, 220, 140, 0.3);
+          color: #68e5a4;
+          background: rgba(
+            30,
+            100,
+            65,
+            0.08
+          );
+        }
+
+        .networking-error {
+          border: 1px solid
+            rgba(255, 80, 80, 0.3);
+          color: #ff7777;
+          background: rgba(
+            120,
+            30,
+            30,
+            0.08
+          );
+        }
+
+        .meeting-count {
+          min-width: 40px;
+          height: 40px;
+          border: 1px solid #292929;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #a0a0a0;
+          font-size: 13px;
+        }
+
+        .meeting-list {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+        }
+
+        .meeting-card {
+          position: relative;
+          padding: 48px;
+          border: 1px solid #282828;
+          border-radius: 24px;
+          background: #080808;
+          transition:
+            border-color 0.2s ease,
+            transform 0.2s ease;
+        }
+
+        .meeting-card:hover {
+          border-color: #3d3d3d;
+          transform: translateY(-1px);
+        }
+
+        .meeting-card.is-closed {
+          opacity: 0.78;
+        }
+
+        .meeting-card.is-closed:hover {
+          transform: none;
+          border-color: #282828;
+        }
+
+        .meeting-card-top {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          gap: 30px;
+        }
+
+        .active-badge {
+          display: inline-flex;
+          align-items: center;
+          padding: 8px 14px;
+          border: 1px solid
+            rgba(50, 220, 130, 0.4);
+          border-radius: 999px;
+          color: #55df99;
+          font-size: 10px;
+          letter-spacing: 3px;
+          font-weight: 600;
+        }
+
+        .active-badge.closed {
+          border-color: #333;
+          color: #777;
+          background: rgba(
+            255,
+            255,
+            255,
+            0.02
+          );
+        }
+
+        .meeting-card h3 {
+          margin: 22px 0 0;
+          font-size: clamp(
+            30px,
+            4vw,
+            42px
+          );
+          font-weight: 400;
+          letter-spacing: -2px;
+        }
+
+        .meeting-card-actions {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .meeting-code {
+          display: inline-flex;
+          align-items: center;
+          min-height: 46px;
+          padding: 0 15px;
+          border: 1px solid #292929;
+          border-radius: 12px;
+          color: #777;
+          font-size: 11px;
+          letter-spacing: 1px;
+          white-space: nowrap;
+        }
+
+        .menu-wrapper {
+          position: relative;
+        }
+
+        .more-button {
+          width: 46px;
+          height: 46px;
+          border: 0;
+          border-radius: 12px;
+          background: transparent;
+          color: #ddd;
+          font-size: 27px;
+          line-height: 1;
+          cursor: pointer;
+        }
+
+        .more-button:hover {
+          background: #171717;
+        }
+
+        .meeting-menu {
+          position: absolute;
+          top: 54px;
+          right: 0;
+          width: 180px;
+          padding: 8px;
+          border: 1px solid #343434;
+          border-radius: 15px;
+          background: #111;
+          box-shadow:
+            0 20px 60px
+            rgba(0, 0, 0, 0.55);
+          z-index: 100;
+        }
+
+        .menu-item {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 13px 14px;
+          border: 0;
+          border-radius: 9px;
+          background: transparent;
+          color: #eee;
+          text-align: left;
+          font-size: 14px;
+          cursor: pointer;
+        }
+
+        .menu-item:hover {
+          background: #1c1c1c;
+        }
+
+        .menu-icon {
+          width: 20px;
+          text-align: center;
+        }
+
+        .menu-delete {
+          color: #ff6868;
+        }
+
+        .meeting-info {
+          display: grid;
+          grid-template-columns:
+            repeat(2, 1fr);
+          gap: 30px;
+          margin-top: 42px;
+          padding-top: 30px;
+          border-top: 1px solid #242424;
+        }
+
+        .info-item {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .info-label {
+          color: #697585;
+          font-size: 10px;
+          letter-spacing: 4px;
+        }
+
+        .info-item strong {
+          color: #ddd;
+          font-size: 15px;
+          font-weight: 400;
+          line-height: 1.5;
+        }
+
+        .meeting-actions {
+          display: flex;
+          gap: 12px;
+          margin-top: 35px;
+        }
+
+        .qr-button,
+        .secondary-button {
+          min-height: 54px;
+          padding: 0 24px;
+          border-radius: 12px;
+          font-size: 14px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: 0.2s ease;
+        }
+
+        .qr-button {
+          border: 0;
+          background: #f4f4f4;
+          color: #050505;
+        }
+
+        .qr-button:hover {
+          background: #fff;
+        }
+
+        .secondary-button {
+          border: 1px solid #303030;
+          background: transparent;
+          color: #ddd;
+        }
+
+        .secondary-button:hover {
+          border-color: #555;
+          background: #111;
+        }
+
+        .empty-state {
+          padding: 85px 30px;
+          border: 1px solid #252525;
+          border-radius: 24px;
+          text-align: center;
+          color: #777;
+        }
+
+        .empty-add-button {
+          width: 64px;
+          height: 64px;
+          margin-bottom: 25px;
+          border: 1px solid #353535;
+          border-radius: 50%;
+          background: transparent;
+          color: #aaa;
+          font-size: 27px;
+          cursor: pointer;
+          transition: 0.2s ease;
+        }
+
+        .empty-add-button:hover {
+          color: white;
+          border-color: #666;
+          transform: scale(1.05);
+        }
+
+        .empty-state h3 {
+          margin: 0 0 10px;
+          color: #ddd;
+          font-size: 24px;
+          font-weight: 400;
+        }
+
+        .empty-state p {
+          margin: 0;
+          font-size: 14px;
+        }
+
+        .empty-create-link {
+          margin-top: 25px;
+          border: 0;
+          background: transparent;
+          color: #ddd;
+          font-size: 13px;
+          cursor: pointer;
+          text-decoration: underline;
+          text-underline-offset: 4px;
+        }
+
+        /* =====================================
+           TOAST
+        ====================================== */
+
+        .networking-toast {
+          position: fixed;
+          top: 24px;
+          right: 24px;
+          z-index: 3000;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 14px 18px;
+          border-radius: 12px;
+          background: #111;
+          box-shadow:
+            0 20px 70px
+            rgba(0, 0, 0, 0.6);
+          font-size: 14px;
+        }
+
+        .toast-success {
+          border: 1px solid
+            rgba(70, 220, 140, 0.35);
+          color: #70e3a6;
+        }
+
+        .toast-error {
+          border: 1px solid
+            rgba(255, 80, 80, 0.35);
+          color: #ff7777;
+        }
+
+        .toast-icon {
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: currentColor;
+          color: #111;
+          font-size: 12px;
+          font-weight: 800;
+        }
+
+        /* =====================================
+           MODALS
+        ====================================== */
+
+        .modal-backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 2000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 24px;
+          background: rgba(
+            0,
+            0,
+            0,
+            0.78
+          );
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+        }
+
+        .edit-modal,
+        .delete-modal {
+          width: 100%;
+          max-width: 620px;
+          padding: 34px;
+          border: 1px solid #333;
+          border-radius: 22px;
+          background: #0d0d0d;
+          box-shadow:
+            0 30px 100px
+            rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 35px;
+        }
+
+        .modal-header h2 {
+          margin: 0;
+          font-size: 30px;
+          font-weight: 400;
+        }
+
+        .modal-close {
+          width: 40px;
+          height: 40px;
+          border: 1px solid #292929;
+          border-radius: 10px;
+          background: transparent;
+          color: #aaa;
+          font-size: 24px;
+          cursor: pointer;
+        }
+
+        .modal-close:hover {
+          background: #171717;
+          color: white;
+        }
+
+        .edit-modal .form-group {
+          margin-bottom: 22px;
+        }
+
+        .modal-actions {
+          display: flex;
+          justify-content: flex-end;
+          gap: 12px;
+          margin-top: 30px;
+        }
+
+        .modal-actions .secondary-button,
+        .modal-save,
+        .delete-confirm-button {
+          width: auto;
+          min-width: 140px;
+        }
+
+        .delete-modal {
+          max-width: 460px;
+          text-align: center;
+        }
+
+        .delete-icon {
+          width: 54px;
+          height: 54px;
+          margin: 0 auto 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid
+            rgba(255, 80, 80, 0.3);
+          border-radius: 50%;
+          color: #ff6868;
+        }
+
+        .delete-modal h2 {
+          margin: 0 0 12px;
+          font-size: 28px;
+          font-weight: 400;
+        }
+
+        .delete-modal p {
+          margin: 0;
+          color: #888;
+          line-height: 1.6;
+          font-size: 14px;
+        }
+
+        .delete-modal strong {
+          color: #ddd;
+          font-weight: 500;
+        }
+
+        .delete-confirm-button {
+          min-height: 54px;
+          padding: 0 24px;
+          border: 1px solid
+            rgba(255, 70, 70, 0.5);
+          border-radius: 12px;
+          background: rgba(
+            120,
+            30,
+            30,
+            0.15
+          );
+          color: #ff7070;
+          font-size: 14px;
+          font-weight: 600;
+          cursor: pointer;
+        }
+
+        .delete-confirm-button:hover {
+          background: rgba(
+            150,
+            35,
+            35,
+            0.25
+          );
+        }
+
+        @media (max-width: 800px) {
+
+          .networking-page {
+            padding: 30px 18px 70px;
+          }
+
+          .create-meeting {
+            padding: 28px 20px;
+          }
+
+          .meeting-card {
+            padding: 28px 20px;
+          }
+
+          .meeting-card-top {
+            flex-direction: column;
+          }
+
+          .meeting-card-actions {
+            width: 100%;
+            justify-content: space-between;
+          }
+
+          .meeting-info {
+            grid-template-columns: 1fr;
+          }
+
+          .meeting-actions {
+            flex-wrap: wrap;
+          }
+
+          .qr-button,
+          .secondary-button {
+            flex: 1;
+          }
+
+          .networking-toast {
+            left: 18px;
+            right: 18px;
+            top: 18px;
+          }
+        }
+
+        @media (max-width: 500px) {
+
+          .networking-header h1 {
+            font-size: 48px;
+          }
+
+          .section-heading h2 {
+            font-size: 28px;
+          }
+
+          .meeting-card h3 {
+            font-size: 28px;
+          }
+
+          .modal-backdrop {
+            padding: 15px;
+          }
+
+          .edit-modal,
+          .delete-modal {
+            padding: 25px 20px;
+          }
+
+          .modal-actions {
+            flex-direction: column-reverse;
+          }
+
+          .modal-actions
+            .secondary-button,
+          .modal-actions .create-button,
+          .delete-confirm-button {
+            width: 100%;
+          }
+
+        }
+
+      `}</style>
 
     </main>
   );
